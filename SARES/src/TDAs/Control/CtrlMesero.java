@@ -5,10 +5,22 @@
  */
 package TDAs.Control;
 
+import java.awt.event.ActionEvent;
+
 /**
  *
  * @author User
  */
-public class CtrlMesero {
+public class CtrlMesero implements Ctrl {
+
+    @Override
+    public void view() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
