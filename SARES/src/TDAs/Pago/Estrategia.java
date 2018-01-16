@@ -7,7 +7,7 @@ package TDAs.Pago;
 
 /**
  *
- * @author User
+ * @author CltControl
  */
 public interface Estrategia {
     public void pay();
