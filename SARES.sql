@@ -7,7 +7,8 @@ use SARES;
 CREATE TABLE Usuario(
 	usuario varchar(50) not null,
     clave varchar(50) not null,
-    primary key (usuario)
+    primary key (usuario),
+    eliminado boolean not null
 );
 
 CREATE TABLE Rol(
@@ -23,12 +24,12 @@ CREATE TABLE Empleado(
     apellidos varchar(255) not null,
     edad int not null,
     sueldo float not null,
-    idCargo int not null auto_increment,
+    idRol int not null auto_increment,
     usuario varchar(50) not null,
     eliminado boolean not null,
     primary key (cedula),
     foreign key (usuario) references Usuario(usuario),
-    foreign key (idRol) references Cargo(idRol)
+    foreign key (idRol) references Rol(idRol)
 );
 
 CREATE TABLE Environments(
@@ -92,9 +93,9 @@ CREATE TABLE Orden (
     idChef varchar(10) not null,
     
     PRIMARY KEY (id),
-    FOREIGN KEY (idCliente) REFERENCES Cliente(cedula),
-    FOREIGN KEY (idMesero) REFERENCES Personal(cedula),
-    FOREIGN KEY (idChef) REFERENCES Personal(cedula)
+    FOREIGN KEY (idCliente) REFERENCES Cliente(ced),
+    FOREIGN KEY (idMesero) REFERENCES Empleado(cedula),
+    FOREIGN KEY (idChef) REFERENCES Empleado(cedula)
 );
 
 CREATE TABLE Detalle_Orden(
@@ -108,7 +109,7 @@ CREATE TABLE Detalle_Orden(
     
     PRIMARY KEY (ID_detalle),
     FOREIGN KEY (ID_Orden) references Orden(id),
-    foreign key (ID_Articulo) references Articulo(ID)
+    foreign key (ID_Item) references Item(ID)
 );
 
 CREATE TABLE MesaOrden(
@@ -139,7 +140,7 @@ CREATE TABLE Factura (
     TipoDePago int,
     
     PRIMARY KEY (ID),
-    FOREIGN KEY (Id_cliente) REFERENCES Cliente(cedula),
+    FOREIGN KEY (Id_cliente) REFERENCES Cliente(ced),
     FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID)
 );
 
@@ -209,13 +210,13 @@ VALUES 	(1, 2, 1, 1, 0),
         (6, 6, 1, 1, 0), 
         (7, 8, 1, 1, 0);
 
-INSERT INTO Usuario (usuario, clave)
-VALUES 	('admin', 'superclave'), 
-		('cajero', '1234'), 
-        ('repartidor', '0987'), 
-        ('mesero_1', 'sssd123'),
-        ('mesero_2', '739873'),
-        ('chef', '125');
+INSERT INTO Usuario (usuario, clave,eliminado)
+VALUES 	('admin', 'superclave',0), 
+		('cajero', '1234',0), 
+        ('repartidor', '0987',0), 
+        ('mesero_1', 'sssd123',0),
+        ('mesero_2', '739873',0),
+        ('chef', '125',0);
 
 INSERT INTO Empleado (cedula, nombres, apellidos, edad, sueldo, idRol, usuario, eliminado) 
 VALUES 	('0900000000', 'Luis', 'Arizaga', 23, 500, 1, 'admin', 0),
@@ -232,4 +233,167 @@ VALUES 	(1, 'limonada', 'jarra de limonada ', 4, 1, 3, 5, 0),
         (4, 'seco de pollo', 'seco de pollo', 4, 1, 10, 2, 0),
         (5, 'Arroz marinero', 'arroz marinero', 7, 1, 13, 2, 0),
         (6, 'tres leches', 'tres leches', 3, 1, 4, 3, 0);
+delimiter $$
 
+create procedure ObtenerEmpleadoPorUsuario(in cadena varchar(255))
+begin
+	select *
+    from Empleado
+    where usuario = cadena;
+end$$
+
+create procedure verificarUsuarioContrasena(in inUsuario varchar(255), in inContrasena varchar(255))
+begin
+	select *
+    from Usuario
+    where usuario = inUsuario and clave = inContrasena;
+end$$
+
+
+
+create procedure AgregarUsuario(in usuario varchar(255), IN contraseña VARCHAR(255))
+begin
+	INSERT INTO Usuario (usuario, clave, eliminado)
+	VALUES 	(usuario, contraseña, 0);
+end$$
+
+create procedure EliminarUsuario(in usuario varchar(255))
+begin
+	update Usuario
+	set eliminado=1
+    where Usuario.usuario = usuario;
+end$$
+
+create procedure CambiarContraseña(in usuario varchar(255), IN contraseña VARCHAR(255))
+begin
+	update Usuario 
+	set clave=contraseña
+	where Usuario.clave = contraseña; 
+end$$
+
+create procedure CambiarUsuario(in usuario varchar(255), IN nuevo VARCHAR(255))
+begin
+	update Usuario 
+	set Usuario.usuario = nuevo
+	where Usuario.usuario = usuario; 
+end$$
+
+create procedure AgregarAmbiente(in Nombre varchar(255))
+begin
+	INSERT INTO Environments (nombre, eliminado)
+	VALUES 	(Nombre, 0);
+end$$
+
+create procedure EliminarAmbiente(in id INT)
+begin
+	update Environments
+	set eliminado=1
+    where Environments.idEnvi = id;
+end$$
+
+create procedure ActualizarAmbiente(in Nombre varchar(255), in nuevo varchar(255))
+begin
+	update Environments
+	set Environments.nombre = nuevo
+    where Environments.nombre = Nombre;
+end$$
+
+create procedure VerAmbientes()
+begin
+	select * from  Environments;
+end$$
+
+create procedure AgregarMesa(in inAsientos int, in inEnvi int)
+begin
+	INSERT INTO Sares.Mesa (asientos, disponibilidad, idEnvi, eliminado)
+	VALUES 	(inAsientos, 1, inAmbiente, 0);
+end$$
+
+create procedure EliminarMesa(in id INT)
+begin
+	update Mesa
+	set Mesa.eliminado=1
+    where Mesa.idMesa = id;
+end$$
+
+create procedure ActualizarMesa(in id int, in Asientos int, in Disponibilidad tinyint, in Ambiente int)
+begin
+
+
+	update Mesa
+	set Mesa.asientos = Asientos, Mesa.disponibilidad = Disponibilidad, Mesa.idEnvi = Ambiente
+    where Mesa.idMesa = id;
+end$$
+
+create procedure VerMesas()
+begin
+	select * from Mesa;
+end$$
+delimiter ;
+delimiter $$
+
+create procedure NuevaOrden(in cliente varchar(10), in mesero varchar(10), in mesa int, out NuevaOrden int)
+begin
+	INSERT INTO Orden(EnCola, pagado, enPreparacion, cocinado, entregado, idCliente, idMesero) 
+    VALUES (0, 0, 0, 0, 0, cliente, mesero);
+    
+    SELECT LAST_INSERT_ID() into NuevaOrden;
+    
+    Insert INTO MesaOrden(idMesa, idOrden)
+    values(mesa, NuevaOrden);
+    
+end$$
+
+create procedure EliminarOrden(in inOrden int)
+begin
+	delete from Orden
+    where Orden.id = inOrden;
+end$$
+
+create procedure EliminarItemOrden(in inOrden int, in inItem int)
+begin
+	Delete from SARES.Detalle_Orden
+    where Detalle_Orden.ID_Orden = inOrden AND Detalle_Orden.ID_Item = Item;
+end$$
+
+Create PROCEDURE EncolarPedido(in pedido int)
+begin
+	update Pedido
+    set Pedido.EnCola = 1
+    where Pedido.id = pedido;
+end$$
+create procedure AgregarItemAOrden(in inItem int, in inOrden int, in Cantidad int,in obs varchar(255))
+begin
+	INSERT INTO Detalle_Orden(ID_Item, ID_Orden, cantidad, Observaciones)
+    VALUES (inItem, inOrden, Cantidad, obs);
+end$$
+
+CREATE PROCEDURE ActualizarDetalleOrden(in inItem int, in inOrden int, in Cantidad int,in obs varchar(255))
+begin
+	update Detalle_Orden
+    set Detalle_Orden.cantidad = cantidad, Detalle_Orden.Observaciones = Obs
+    where Detalle_Orden.ID_Item=inItem AND Detalle_Orden.ID_Orden = inOrden;
+end$$
+CREATE procedure AceptarOrden(in inOrden int, in id int)
+begin
+	update Orden
+    set Orden.idChef = id, Orden.enPreparacion = 1
+    where Orden.id = inOrden;
+end$$
+
+create procedure OrdenTerminada(in inOrden int)
+begin
+	UPDATE Orden
+    set Orden.cocinado = 1
+    where Orden.id = inOrden;
+end$$
+
+create procedure FaltaIngrediente(in inItem int)
+begin
+	update Item
+    set Item.Disponibilidad = 0
+    where Item.ID = inItem;
+end$$
+
+
+delimiter ;
