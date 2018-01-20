@@ -19,7 +19,7 @@ public class CtrlChef implements Ctrl{
 
     public CtrlChef(Chef chef) {
         this.chef = chef;
-        this.chef.setControl(this);
+        this.chef.setCtrl(this);
         ventana = new GuiChef();
     }
     

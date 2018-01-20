@@ -5,19 +5,27 @@
  */
 package TDAs.Actores;
 
-import Constants.Personal;
+import Constants.Constants;
 import TDAs.Control.CtrlChef;
+
 
 /**
  *
  * @author User
  */
-public class Chef extends Empleado{
-
+public class Chef extends Empleado implements Update{
+    
+    
     public Chef(String identificacion, String nombres, String apellidos, int edad, double sueldo, String usuario) {
         super(identificacion, nombres, apellidos, edad, sueldo, usuario);
-        this.type = Personal.chef;
-        control = new CtrlChef(this);
+        this.tipoEmp = Constants.chef;
+        ctrl = new CtrlChef(this);
+    }
+    
+
+    @Override
+    public void update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

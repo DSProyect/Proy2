@@ -20,7 +20,7 @@ public class CtrlCajero implements Ctrl {
     public CtrlCajero(Cajero cajero){
         ventana = new GuiCajero();
         this.cajero = cajero;
-        this.cajero.setControl(this);
+        this.cajero.setCtrl(this);
     }
     
     @Override

@@ -5,7 +5,7 @@
  */
 package TDAs.Actores;
 
-import Constants.Personal;
+import Constants.Constants;
 import TDAs.Control.CtrlAdmin;
 
 /**
@@ -13,9 +13,9 @@ import TDAs.Control.CtrlAdmin;
  * @author User
  */
 public class Admin extends Empleado {
-   public Admin(String identificacion, String nombres, String apellidos, int edad, double sueldo, String usuario) {
-        super(identificacion, nombres, apellidos, edad, sueldo, usuario);
-        this.type =Personal.admin; 
-        control = new CtrlAdmin(this);
-    } 
+   public Admin(String identificacion, String nombres, String apellidos, int Edad, double sueldo, String usuario) {
+        super(identificacion, nombres, apellidos, Edad, sueldo, usuario);
+        this.tipoEmp = Constants.admin;
+        ctrl = new CtrlAdmin(this);
+    }
 }

@@ -124,7 +124,7 @@ public class Input extends javax.swing.JFrame {
             //EmpleadoFactoryMethod fac = new EmpleadoFactory();
             //Empleado emp= fac.crearEmpleado(identificacion, nombres, apellidos, WIDTH, ERROR, user);
             Empleado emp = new Admin("0924865322", "jairo", "caicedo", 23, 250, "jaipcaic"); //comprobar
-            emp.getControl().view();
+            emp.getCtrl().view();
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 

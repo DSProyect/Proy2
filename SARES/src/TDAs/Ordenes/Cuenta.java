@@ -1,7 +1,8 @@
 
 package TDAs.Ordenes;
 
-import Constants.Prioridad;
+import Constants.Constants;
+
 
 public class Cuenta {
     private String id;
@@ -13,9 +14,9 @@ public class Cuenta {
         this.id = id;
         this.idMesa = idMesa;
         if(tratoEspecial)
-            this.tratoEspecial = Prioridad.vip;
+            this.tratoEspecial = Constants.preferencial;
         else
-            this.tratoEspecial = Prioridad.normal;
+            this.tratoEspecial = Constants.normal;
     }
 
     public int getTratoEspecial() {

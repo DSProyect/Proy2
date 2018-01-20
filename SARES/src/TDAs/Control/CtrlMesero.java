@@ -18,7 +18,7 @@ public class CtrlMesero implements Ctrl {
 
     public CtrlMesero(Mesero mesero) {
         this.mesero = mesero;
-        this.mesero.setControl(this);
+        this.mesero.setCtrl(this);
         ventana = new GuiMesero();
     }
     

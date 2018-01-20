@@ -12,21 +12,23 @@ import TDAs.Control.Ctrl;
  * @author User
  */
 public abstract class Empleado {
-    protected String identificacion,nombres,apellidos,user;
-    protected int edad,type;
+    protected String identificacion;
+    protected String nombres;
+    protected String apellidos;
+    protected int Edad;
     protected double sueldo;
-    protected Ctrl control;
+    protected String usuario;
+    protected int tipoEmp;
+    protected Ctrl ctrl;
     
-    public Empleado() {
-    } 
 
-    public Empleado(String identificacion, String nombres, String apellidos, int edad, double sueldo, String user) {
+    public Empleado(String identificacion, String nombres, String apellidos, int Edad, double sueldo, String usuario) {
         this.identificacion = identificacion;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.edad = edad;
+        this.Edad = Edad;
         this.sueldo = sueldo;
-        this.user = user;
+        this.usuario = usuario;
     }
     
     public String getIdentificacion() {
@@ -54,11 +56,11 @@ public abstract class Empleado {
     }
 
     public int getEdad() {
-        return edad;
+        return Edad;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setEdad(int Edad) {
+        this.Edad = Edad;
     }
 
     public double getSueldo() {
@@ -69,11 +71,11 @@ public abstract class Empleado {
         this.sueldo = sueldo;
     }
 
-    public Ctrl getControl() {
-        return control;
+    public Ctrl getCtrl() {
+        return ctrl;
     }
 
-    public void setControl(Ctrl control) {
-        this.control = control;
+    public void setCtrl(Ctrl ctrl) {
+        this.ctrl = ctrl;
     }
 }

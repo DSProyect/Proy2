@@ -5,7 +5,8 @@
  */
 package TDAs.Actores;
 
-import Constants.Personal;
+
+import Constants.Constants;
 import TDAs.Control.CtrlCajero;
 
 /**
@@ -15,7 +16,7 @@ import TDAs.Control.CtrlCajero;
 public class Cajero extends Empleado {
     public Cajero(String identificacion, String nombres, String apellidos, int Edad, double sueldo, String usuario) {
         super(identificacion, nombres, apellidos, Edad, sueldo, usuario);
-        this.type = Personal.cajero;
-        control = new CtrlCajero(this);
+            this.tipoEmp = Constants.cajero;
+        ctrl = new CtrlCajero(this);
     }
 }

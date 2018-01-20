@@ -19,7 +19,7 @@ public class CtrlDeliverBoy implements Ctrl{
 
     public CtrlDeliverBoy(DeliverBoy deliver) {
         this.deliver = deliver;
-        this.deliver.setControl(this);
+        this.deliver.setCtrl(this);
         ventana = new GuiDeliverBoy();
     }
     

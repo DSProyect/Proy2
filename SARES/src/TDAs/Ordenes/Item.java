@@ -5,7 +5,6 @@
  */
 package TDAs.Ordenes;
 
-import Constants.Categorias;
 
 /**
  *
@@ -15,10 +14,10 @@ public class Item {
     private String itemID,nombre,Descripcion;
     private double precio;
     private int tiempoPreparacion; 
-    private Categorias cat;
+    private int cat;
     private boolean disponibilidad,eliminado;
     
-    public Item(String itemID, String nombre, double precio, Categorias cat) {
+    public Item(String itemID, String nombre, double precio, int cat) {
         this.itemID = itemID;
         this.nombre = nombre;
         this.precio = precio;
@@ -65,11 +64,11 @@ public class Item {
         this.tiempoPreparacion = tiempoPreparacion;
     }
 
-    public Categorias getCat() {
+    public int getCat() {
         return cat;
     }
 
-    public void setCat(Categorias cat) {
+    public void setCat(int cat) {
         this.cat = cat;
     }
 

@@ -20,7 +20,7 @@ public class CtrlAdmin implements Ctrl {
     public CtrlAdmin(Admin administrador){
         frame = new GuiAdmin();
         this.administrador = administrador;
-        this.administrador.setControl(this);
+        this.administrador.setCtrl(this);
     }
     
     @Override
