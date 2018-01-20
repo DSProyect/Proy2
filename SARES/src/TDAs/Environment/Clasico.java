@@ -13,4 +13,9 @@ import TDAs.Environment.Ambiente;
  */
 public class Clasico extends Ambiente {
     
+    public Clasico(String id) {
+        super(id);
+        this.nombre = "Clasico";
+    }
+    
 }

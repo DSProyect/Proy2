@@ -13,4 +13,11 @@ import TDAs.Environment.Ambiente;
  */
 public class Vip extends Ambiente {
     
+    public Vip(String id) {
+        super(id);
+        this.nombre = "VIP";
+    }
+
+    
+    
 }

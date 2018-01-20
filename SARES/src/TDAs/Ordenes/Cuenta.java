@@ -7,6 +7,7 @@ public class Cuenta {
     private String id;
     private String idMesa;
     private int tratoEspecial;
+    private int total;
     
     public Cuenta(String id, String idMesa, boolean tratoEspecial) {
         this.id = id;
@@ -15,6 +16,24 @@ public class Cuenta {
             this.tratoEspecial = Prioridad.vip;
         else
             this.tratoEspecial = Prioridad.normal;
+    }
+
+    public int getTratoEspecial() {
+        return tratoEspecial;
+    }
+
+    public void setTratoEspecial(int tratoEspecial) {
+        this.tratoEspecial = tratoEspecial;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void calcularTotal() {
+        //Obtener total de la cuenta 
+        //obtenerTotalCuenta(int id);
+        this.total = total;
     }
 
     public String getId() {

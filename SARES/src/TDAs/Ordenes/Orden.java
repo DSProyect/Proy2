@@ -21,14 +21,14 @@ public abstract class Orden {
     protected String idCocinero;
     protected String idCuenta;
     
-    public Orden(String idOrden, double total, String idCliente, String idMesero, String idCuenta) {
+    public Orden(String idOrden, String idCliente, String idMesero, String idCuenta, String idCocinero) {
         this.idOrden = idOrden;
-        this.total = total;
         this.idCliente = idCliente;
         this.idMesero = idMesero;
         this.idCuenta = idCuenta;
+        this.idCocinero = idCocinero;
     }
-
+    //verificar este constructor
     public Orden(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCuenta) {
         this.idOrden = idOrden;
         this.total = total;
@@ -62,7 +62,8 @@ public abstract class Orden {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void calcularTotal() {
+        //obtenerTotalOrden(idOrden); bases de datos
         this.total = total;
     }
 
