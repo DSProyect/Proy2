@@ -1,4 +1,4 @@
-drop database if exists SARES;
+﻿drop database if exists SARES;
 
 create database if not exists SARES;
 
@@ -212,27 +212,27 @@ VALUES 	(1, 2, 1, 1, 0),
 
 INSERT INTO Usuario (usuario, clave,eliminado)
 VALUES 	('admin', 'superclave',0), 
-		('cajero', '1234',0), 
-        ('repartidor', '0987',0), 
-        ('mesero_1', 'sssd123',0),
-        ('mesero_2', '739873',0),
+		('cash', '1234',0), 
+        ('delivery', '0987',0), 
+        ('mesero1', 'sssd123',0),
+        ('mesero2', '739873',0),
         ('chef', '125',0);
 
 INSERT INTO Empleado (cedula, nombres, apellidos, edad, sueldo, idRol, usuario, eliminado) 
-VALUES 	('0900000000', 'Luis', 'Arizaga', 23, 500, 1, 'admin', 0),
-		('0921234567', 'Carlos Andres', 'Garcia Zambrano', 25, 350, 2, 'elcocinero', 0),
-        ('0987654321', 'Alberto Luis', 'Andrade Li', 75, 300, 4, 'elrepartidor', 0), 
-        ('0912873456', 'Estefany karen', 'Falconi Seto', 27, 300, 3, 'elmesero1', 0),
-        ('0981237645', 'Jose Jose', 'Primero Segundo', 19, 300, 3, 'elmesero2', 0),
-        ('0987612345', 'Leonardo', 'Velez', 23, 325, 5, 'elcajero', 0);
+VALUES 	('0578473311', 'Luis', 'Ochoa', 25, 600, 1, 'admin', 0),
+		('0342565986', 'Andres', 'Soriano', 23, 950, 2, 'elchef', 0),
+        ('0930094812', 'Alberto', 'Franco', 45, 780, 4, 'delivery', 0), 
+        ('0639957441', 'Karem', 'Soto', 65, 309, 3, 'mesero1', 0),
+        ('0091231456', 'Juan', 'Flor', 49, 5600, 3, 'mesero2', 0),
+        ('0698035421', 'Ericka', 'Velez', 33, 1325, 5, 'cash', 0);
 
 INSERT INTO Item (ID, Nombre, Descripcion, Precio, Disponibilidad, TiempoPreparacion, IdCategoria, eliminado) 
-VALUES 	(1, 'limonada', 'jarra de limonada ', 4, 1, 3, 5, 0),
+VALUES 	(1, 'naranjada', 'jarra de naranja ', 4, 1, 3, 5, 0),
 		(2, 'Jugo de Durazno', 'Jugo Artificial', 1, 1, 0, 6, 0),
-		(3, 'Patacones', 'patacones con queso', 2, 1, 4, 1, 0),
-        (4, 'seco de pollo', 'seco de pollo', 4, 1, 10, 2, 0),
-        (5, 'Arroz marinero', 'arroz marinero', 7, 1, 13, 2, 0),
-        (6, 'tres leches', 'tres leches', 3, 1, 4, 3, 0);
+		(3, 'Maduros', 'maduros', 2, 1, 4, 1, 0),
+        (4, 'seco de gallina', 'seco de gallina', 4, 1, 10, 2, 0),
+        (5, 'moros de lentejas', 'moros de lentejas', 7, 1, 13, 2, 0),
+        (6, 'tiramisu', 'tiramisu', 3, 1, 4, 3, 0);
 delimiter $$
 
 create procedure ObtenerEmpleadoPorUsuario(in cadena varchar(255))
