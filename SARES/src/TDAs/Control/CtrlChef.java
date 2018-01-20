@@ -5,6 +5,8 @@
  */
 package TDAs.Control;
 
+import GUIs.GuiChef;
+import TDAs.Actores.Chef;
 import java.awt.event.ActionEvent;
 
 /**
@@ -12,10 +14,18 @@ import java.awt.event.ActionEvent;
  * @author User
  */
 public class CtrlChef implements Ctrl{
+    private GuiChef ventana;
+    private Chef chef;
 
+    public CtrlChef(Chef chef) {
+        this.chef = chef;
+        this.chef.setControl(this);
+        ventana = new GuiChef();
+    }
+    
     @Override
     public void view() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ventana.setVisible(true);
     }
 
     @Override

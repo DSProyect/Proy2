@@ -12,8 +12,8 @@ package TDAs.Pago;
 public class PagoEfectivo implements Estrategia {
 
     @Override
-    public void pay() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void pay(double total) {
+        System.out.println("Se pago en EFECTIVO");
     }
     
 }

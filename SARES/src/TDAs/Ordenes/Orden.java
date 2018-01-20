@@ -15,24 +15,21 @@ public abstract class Orden {
     protected boolean pagado;
     protected boolean cocinado;
     protected boolean entregado;
+    protected int tiempoPreparacion;
     protected String idCliente;
     protected String idMesero;
     protected String idCocinero;
-
-    public Orden() {
-    }
-
-    public Orden(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero) {
+    protected String idCuenta;
+    
+    public Orden(String idOrden, double total, String idCliente, String idMesero, String idCuenta) {
         this.idOrden = idOrden;
         this.total = total;
-        this.pagado = pagado;
-        this.cocinado = cocinado;
-        this.entregado = entregado;
         this.idCliente = idCliente;
-        this.idMesero = idMesero; 
+        this.idMesero = idMesero;
+        this.idCuenta = idCuenta;
     }
 
-    public Orden(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCocinero) {
+    public Orden(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCuenta) {
         this.idOrden = idOrden;
         this.total = total;
         this.pagado = pagado;
@@ -40,9 +37,17 @@ public abstract class Orden {
         this.entregado = entregado;
         this.idCliente = idCliente;
         this.idMesero = idMesero;
-        this.idCocinero = idCocinero;
+        this.idCuenta = idCuenta;
     }
     
+
+    public String getIdCuenta() {
+        return idCuenta;
+    }
+
+    public void setIdCuenta(String idCuenta) {
+        this.idCuenta = idCuenta;
+    }
     
 
     public String getIdOrden() {
@@ -108,4 +113,9 @@ public abstract class Orden {
     public void setIdCocinero(String idCocinero) {
         this.idCocinero = idCocinero;
     }
+
+    public int getTiempoPreparacion() {
+        return tiempoPreparacion;
+    }
+    
 }

@@ -10,5 +10,5 @@ package TDAs.Pago;
  * @author CltControl
  */
 public interface Estrategia {
-    public void pay();
+    public void pay( double total);
 }

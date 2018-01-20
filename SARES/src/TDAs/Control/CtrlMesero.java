@@ -6,16 +6,27 @@
 package TDAs.Control;
 
 import java.awt.event.ActionEvent;
-
+import GUIs.GuiMesero;
+import TDAs.Actores.Mesero;
 /**
  *
  * @author User
  */
 public class CtrlMesero implements Ctrl {
+    private GuiMesero ventana;
+    private Mesero mesero;
+
+    public CtrlMesero(Mesero mesero) {
+        this.mesero = mesero;
+        this.mesero.setControl(this);
+        ventana = new GuiMesero();
+    }
+    
+    
 
     @Override
     public void view() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ventana.setVisible(true); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

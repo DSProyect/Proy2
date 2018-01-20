@@ -362,6 +362,7 @@ begin
     set Pedido.EnCola = 1
     where Pedido.id = pedido;
 end$$
+
 create procedure AgregarItemAOrden(in inItem int, in inOrden int, in Cantidad int,in obs varchar(255))
 begin
 	INSERT INTO Detalle_Orden(ID_Item, ID_Orden, cantidad, Observaciones)

@@ -5,6 +5,8 @@
  */
 package TDAs.Control;
 
+import GUIs.GuiDeliverBoy;
+import TDAs.Actores.DeliverBoy;
 import java.awt.event.ActionEvent;
 
 /**
@@ -12,10 +14,18 @@ import java.awt.event.ActionEvent;
  * @author User
  */
 public class CtrlDeliverBoy implements Ctrl{
+    private GuiDeliverBoy ventana;
+    private DeliverBoy deliver;
 
+    public CtrlDeliverBoy(DeliverBoy deliver) {
+        this.deliver = deliver;
+        this.deliver.setControl(this);
+        ventana = new GuiDeliverBoy();
+    }
+    
     @Override
     public void view() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ventana.setVisible(true);    
     }
 
     @Override

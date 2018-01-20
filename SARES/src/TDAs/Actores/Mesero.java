@@ -5,10 +5,21 @@
  */
 package TDAs.Actores;
 
+import Constants.Personal;
+import TDAs.Control.CtrlMesero;
+
 /**
  *
  * @author User
  */
-public class Mesero {
+public class Mesero extends Empleado{
+
+    public Mesero(String identificacion, String nombres, String apellidos, int edad, double sueldo, String user) {
+        super(identificacion, nombres, apellidos, edad, sueldo, user);
+        this.type = Personal.mesero;
+        control = new CtrlMesero(this);
+    }
+    
+    
     
 }

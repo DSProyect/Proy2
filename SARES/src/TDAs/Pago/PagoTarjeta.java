@@ -10,10 +10,23 @@ package TDAs.Pago;
  * @author User
  */
 public class PagoTarjeta implements Estrategia {
+    private int numeroCuenta;
 
+    public PagoTarjeta(int numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
+    }
+
+    public int getNumeroCuenta() {
+        return numeroCuenta;
+    }
+
+    public void setNumeroCuenta(int numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
+    }
+    
     @Override
-    public void pay() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void pay(double total) {
+        System.out.println("Pago exitoso");
     }
     
 }

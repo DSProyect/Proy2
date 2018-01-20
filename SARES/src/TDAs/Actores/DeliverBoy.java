@@ -5,10 +5,19 @@
  */
 package TDAs.Actores;
 
+import Constants.Personal;
+import TDAs.Control.CtrlDeliverBoy;
+
 /**
  *
  * @author User
  */
-public class DeliverBoy {
+public class DeliverBoy extends Empleado{
+
+    public DeliverBoy(String identificacion, String nombres, String apellidos, int edad, double sueldo, String user) {
+        super(identificacion, nombres, apellidos, edad, sueldo, user);
+        this.type = Personal.deliverboy;
+        control = new CtrlDeliverBoy(this);
+    }
     
 }

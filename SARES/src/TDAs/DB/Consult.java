@@ -5,6 +5,7 @@
  */
 package TDAs.DB;
 
+import TDAs.Environment.Mesa;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,5 +70,21 @@ public class Consult {
             System.out.println(ex.getMessage());
         }
         return resultado;
+    }
+    
+    public boolean addMesa(Mesa mesa){
+        return true;
+    }
+    
+    public boolean removeMesa(Mesa mesa){
+        return true;
+    }
+    
+    public boolean ordenPagada(String idOrden){
+        return true;
+    }
+    
+    public int obtenerTotalCuenta(String idCuenta){
+        return 0;
     }
 }

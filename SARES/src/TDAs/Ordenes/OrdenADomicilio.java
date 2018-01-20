@@ -12,15 +12,15 @@ package TDAs.Ordenes;
 public class OrdenADomicilio extends Orden {
     private String direccionEntrega;
 
-    public OrdenADomicilio(String direccionEntrega, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero) {
-        super(idOrden, total, pagado, cocinado, entregado, idCliente, idMesero);
+    public OrdenADomicilio(String direccionEntrega, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCuenta) {
+        super(idOrden, total, pagado, cocinado, entregado, idCliente, idMesero, idCuenta);
         this.direccionEntrega = direccionEntrega;
     }
 
-    public OrdenADomicilio(String direccionEntrega, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCocinero) {
+    /*public OrdenADomicilio(String direccionEntrega, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCocinero) {
         super(idOrden, total, pagado, cocinado, entregado, idCliente, idMesero, idCocinero);
         this.direccionEntrega = direccionEntrega;
-    }
+    }*/
 
     public String getDireccionEntrega() {
         return direccionEntrega;
