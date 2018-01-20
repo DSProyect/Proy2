@@ -5,6 +5,7 @@
  */
 package TDAs.DB;
 
+import TDAs.Environment.Ambiente;
 import TDAs.Environment.Mesa;
 import TDAs.Ordenes.Orden;
 import TDAs.Ordenes.OrdenItem;
@@ -206,11 +207,154 @@ public class Consult {
         return true;
     }
     
+    public void faltaIngredientes(String idItem){
+        cadenaDeLlamada = "{CALL FaltaIngrediente(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, idItem);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public boolean elminarItemOrden(String idOrden, String idItem){
+        cadenaDeLlamada = "{CALL EliminarOrden(?,?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, idOrden);
+            llamada.setString(2, idItem);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean actualizarMesa(String idMesa, int asientos, int disponibilidad, Ambiente ambiente){
+        cadenaDeLlamada = "{CALL ActualizarMesa(?,?,?,?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, idMesa);
+            llamada.setString(2, Integer.toString(asientos));
+            llamada.setString(3, Integer.toString(disponibilidad));
+            llamada.setString(4, ambiente.getNombre());
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
     public boolean ordenPagada(String idOrden){
         return true;
     }
     
-    public int obtenerTotalCuenta(String idCuenta){
+    //public verMesas();
+    //public verAmbientes();
+    
+    public boolean actualizarAmbiente(String nombre, String nuevoNombre){
+        cadenaDeLlamada = "{CALL ActualizarAmbiente(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, nombre);
+            llamada.setString(2, nuevoNombre);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public int obtenerTotalCuenta(String idCuenta){ //CREAR EN LA BASE DE DATOS
         return 0;
+    }
+    
+    public boolean eliminarAmbiente(String idAmbiente){
+        cadenaDeLlamada = "{CALL EliminarAmbiente(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, idAmbiente);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean cambiarUsuario(String usuario, String nuevoUsuario){
+        cadenaDeLlamada = "{CALL CambiarUsuario(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, usuario);
+            llamada.setString(2, nuevoUsuario);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean eliminarUsuario(String usuario){
+        cadenaDeLlamada = "{CALL EliminarUsuario(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, usuario);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean aggUsuario(String usuario, String contra){
+        cadenaDeLlamada = "{CALL AgregarUsuario(?,?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, usuario);
+            llamada.setString(2, contra);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public ResultSet verificarUsuarioContraseña(String usuario, String contra){
+        cadenaDeLlamada = "{CALL verificarUsuarioPorContrasena(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, usuario);
+            llamada.setString(2, contra);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        return resultado;
     }
 }
