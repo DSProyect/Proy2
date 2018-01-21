@@ -20,5 +20,9 @@ public class OrdenNormal extends Orden {
         super(idMesero, idCuenta, idCocinero);
     }
 
+    public OrdenNormal(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, int tiempoPreparacion, String idMesero, String idCocinero, String idCuenta) {
+        super(idOrden, total, pagado, cocinado, entregado, tiempoPreparacion, idMesero, idCocinero, idCuenta);
+    }
+    
     
 }

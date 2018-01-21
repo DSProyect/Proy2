@@ -17,6 +17,12 @@ public class OrdenADomicilio extends Orden {
         this.direccionEntrega = direccionEntrega;
     }
 
+    public OrdenADomicilio(String direccionEntrega, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, int tiempoPreparacion, String idMesero, String idCocinero, String idCuenta) {
+        super(idOrden, total, pagado, cocinado, entregado, tiempoPreparacion, idMesero, idCocinero, idCuenta);
+        this.direccionEntrega = direccionEntrega;
+    }
+
+    
     
     /*public OrdenADomicilio(String direccionEntrega, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCocinero) {
         super(idOrden, total, pagado, cocinado, entregado, idCliente, idMesero, idCocinero);

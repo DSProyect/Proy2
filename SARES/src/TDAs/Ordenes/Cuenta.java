@@ -9,6 +9,7 @@ public class Cuenta {
     private String idMesa;
     private int tratoEspecial;
     private int total;
+    private String idCliente;
     
     public Cuenta(String id, String idMesa, boolean tratoEspecial) {
         this.id = id;
@@ -19,6 +20,7 @@ public class Cuenta {
             this.tratoEspecial = Constants.normal;
     }
 
+    
     public int getTratoEspecial() {
         return tratoEspecial;
     }

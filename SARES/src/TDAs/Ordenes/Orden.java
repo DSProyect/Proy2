@@ -36,10 +36,21 @@ public abstract class Orden {
         this.entregado = false;
     }
     //verificar este constructor
-
-
+    
     public String getIdCuenta() {
         return idCuenta;
+    }
+
+    public Orden(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, int tiempoPreparacion, String idMesero, String idCocinero, String idCuenta) {
+        this.idOrden = idOrden;
+        this.total = total;
+        this.pagado = pagado;
+        this.cocinado = cocinado;
+        this.entregado = entregado;
+        this.tiempoPreparacion = tiempoPreparacion;
+        this.idMesero = idMesero;
+        this.idCocinero = idCocinero;
+        this.idCuenta = idCuenta;
     }
 
     public void setIdCuenta(String idCuenta) {

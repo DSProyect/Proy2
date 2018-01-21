@@ -89,7 +89,7 @@ CREATE TABLE Orden (
     enPreparacion boolean not null,
     cocinado boolean not null,
     entregado boolean not null,
-    idMesero varchar(10) not null,
+    idMesero varchar(10) not null, 
     idChef varchar(10) not null,
     
     PRIMARY KEY (id),
@@ -135,13 +135,15 @@ CREATE TABLE Factura (
     ID int NOT NULL auto_increment,
     TOTAL double,
     Fecha DATE,
-    Id_cliente varchar(10) not null,
+    Id_cliente varchar(10),
     Descuento int,
     TipoDePago int,
     TratoEspecial boolean,
+    idMesa int not null,
     PRIMARY KEY (ID),
     FOREIGN KEY (Id_cliente) REFERENCES Cliente(ced),
-    FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID)
+    FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID),
+    FOREIGN KEY (idMesa) REFERENCES Mesa(idMesa)
 );
 
 CREATE TABLE Detalle_Factura(
@@ -280,12 +282,19 @@ begin
     where Detalle_Orden.ID_Orden = inOrden AND Detalle_Orden.ID_Item = Item;
 end$$
 
-Create PROCEDURE EncolarPedido(in pedido int)
+Create PROCEDURE EncolarOrden(in idOrden int)
 begin
-	update Pedido
-    set Pedido.EnCola = 1
-    where Pedido.id = pedido;
+	update Orden
+    set Orden.enPreparacion = 1
+    where Orden.id = idOrden;
 end$$
+
+Create Procedure obtenerOrdenesNueva() #Obtenemos la ordenes que no estan en cola
+begin
+	Select * FROM Orden
+    where Orden.enPreparacion = 0;
+end$$
+
 
 create procedure AgregarItemAOrden(in inItem int, in inOrden int, in Cantidad int,in obs varchar(255))
 begin
@@ -330,6 +339,46 @@ create procedure obtenerCantOrden()
 begin
 	Select count(Orden.id) from Orden;
 end$$
+
+create procedure aggCuenta(in tratoEspecial boolean, in IdMesa int)
+begin 
+	Insert Into Factura(TratoEspecial,idMesa) 
+    Values(tratoEspecial,IdMesa);
+    
+    Update Mesa
+    set Mesa.disponibilidad = 1
+    where Mesa.idMesa = IdMesa;
+end$$
+
+create procedure verCuenta( in idCuenta int)
+begin
+	Select * from Factura
+    where Factura.ID = idCuenta;
+end$$
+
+create procedure aggCliente(in cedula varchar(10), in nombre varchar(255), in apellido varchar(255), in dir varchar(255))
+begin
+	Insert INTO Cliente (ced,LastName,FirstName,Direccion)
+    VALUES (cedula, apellido, nombre, dir);
+end$$
+
+create procedure actualizarCliente(in cedula varchar(10), in nombre varchar(255), in apellido varchar(255), in dir varchar(255), in eliminado boolean)
+begin
+	Update Cliente
+    set Cliente.LastName = apellido,
+        Cliente.FirstName = nombre,
+        Cliente.Direccion = dir,
+        Cliente.eliminado = eliminado
+	where Cliente.ced = cedula;
+end$$
+
+create procedure eliminarCliente(in cedula varchar(10))
+begin 
+	DELETE FROM Cliente
+    where Cliente.ced = cedula;
+end$$
+
+
 delimiter ;
 
 

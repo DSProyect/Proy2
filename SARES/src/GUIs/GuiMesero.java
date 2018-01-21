@@ -158,7 +158,7 @@ public class GuiMesero extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"LLENE LOS CAMPOS");
         else{
             
-                orden = new OrdenNormal("1", "1", 500, true, false, false, "1", "1", "1");
+                orden = new OrdenNormal("1", "1", "1");
                 Consult.getInstancia().aggOrden(orden);
             
                 
