@@ -143,15 +143,14 @@ public class Consult {
     }
     
     public boolean aggOrden(Orden orden){
-        cadenaDeLlamada = "{CALL NuevaOrden(?,?,?,?)}";
+        cadenaDeLlamada = "{CALL NuevaOrden(?,?,?)}";
         resultado = null;
         //Corregir el metodo en la base de datos debe ser OrdenCuenta
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, orden.getIdCliente());
-            llamada.setString(2, orden.getIdMesero());
-            llamada.setString(3, orden.getIdCuenta());
-            llamada.setString(4, orden.getIdOrden());
+            llamada.setString(1, orden.getIdMesero());
+            llamada.setString(2, orden.getIdCuenta());
+            llamada.setString(3, orden.getIdOrden());
             resultado = llamada.executeQuery();
             resultado.next();
         }catch(SQLException ex){
@@ -356,5 +355,48 @@ public class Consult {
             System.out.println(ex.getMessage());
         }
         return resultado;
+    }
+    
+    public ResultSet buscarOrden(String idOrden){
+        cadenaDeLlamada = "{CALL BuscarOrden(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, idOrden);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        return resultado;
+    }
+    
+    public boolean existeOrden(String idOrden){
+        cadenaDeLlamada = "{CALL BuscarOrden(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, idOrden);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
+    public ResultSet obtenerIdOrden(){
+        cadenaDeLlamada = "{CALL obtenerCantOrden()}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        return resultado;
+
     }
 }

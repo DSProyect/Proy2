@@ -1,4 +1,4 @@
-﻿drop database if exists SARES;
+
 
 create database if not exists SARES;
 
@@ -49,6 +49,7 @@ CREATE TABLE Mesa(
     foreign key (idEnvi) references Environments(idEnvi)
 );
 
+    
 CREATE TABLE Cliente (
 	ced varchar(10) not null,
     LastName varchar(255) NOT NULL,
@@ -88,15 +89,14 @@ CREATE TABLE Orden (
     enPreparacion boolean not null,
     cocinado boolean not null,
     entregado boolean not null,
-    idCliente varchar(10) not null,
     idMesero varchar(10) not null,
     idChef varchar(10) not null,
     
     PRIMARY KEY (id),
-    FOREIGN KEY (idCliente) REFERENCES Cliente(ced),
     FOREIGN KEY (idMesero) REFERENCES Empleado(cedula),
     FOREIGN KEY (idChef) REFERENCES Empleado(cedula)
 );
+
 
 CREATE TABLE Detalle_Orden(
 
@@ -130,7 +130,7 @@ CREATE TABLE TipoDePago(
     
     PRIMARY KEY (ID)
 );
-
+    
 CREATE TABLE Factura (
     ID int NOT NULL auto_increment,
     TOTAL double,
@@ -138,7 +138,7 @@ CREATE TABLE Factura (
     Id_cliente varchar(10) not null,
     Descuento int,
     TipoDePago int,
-    
+    TratoEspecial boolean,
     PRIMARY KEY (ID),
     FOREIGN KEY (Id_cliente) REFERENCES Cliente(ced),
     FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID)
@@ -174,82 +174,6 @@ begin
     from Empleado
     where usuario = cadena;
 end$$
-
-delimiter ;
-INSERT INTO Rol (idRol, nombreRol, eliminado) 
-VALUES 	(1, 'Administrador', 0), 
-		(2, 'Cocinero', 0), 
-		(3, 'Mesero', 0), 
-        (4, 'Repartidor', 0), 
-        (5, 'Cajero', 0);
-
-
-INSERT INTO Categoria_Item (ID, Nombre) 
-VALUES	(1, 'Entrada'), 
-		(2, 'Segundo'), 
-        (3, 'Postre'), 
-        (4, 'Refresco'), 
-        (5, 'Natural'),
-        (6, 'Artificial');
-
-INSERT INTO TipoDePago (ID, Tipo) 
-VALUES 	(1, 'Efectivo'),  
-		(2, 'Tarjeta de Credito'), 
-        (3, 'Dinero Electronico');
-
-INSERT INTO Environments (idEnvi, nombre, eliminado) 
-VALUES 	(1, 'Normal', 0), 
-		(2, 'VIP', 0);
-
-INSERT INTO Mesa (idMesa, asientos, disponibilidad, idEnvi, eliminado) 
-VALUES 	(1, 2, 1, 1, 0), 
-		(2, 2, 1, 1, 0), 
-		(3, 2, 1, 2, 0), 
-        (4, 4, 1, 1, 0), 
-        (5, 4, 1, 2, 0), 
-        (6, 6, 1, 1, 0), 
-        (7, 8, 1, 1, 0);
-
-INSERT INTO Usuario (usuario, clave,eliminado)
-VALUES 	('admin', 'superclave',0), 
-		('cash', '1234',0), 
-        ('delivery', '0987',0), 
-        ('mesero1', 'sssd123',0),
-        ('mesero2', '739873',0),
-        ('chef', '125',0);
-
-INSERT INTO Empleado (cedula, nombres, apellidos, edad, sueldo, idRol, usuario, eliminado) 
-VALUES 	('0578473311', 'Luis', 'Ochoa', 25, 600, 1, 'admin', 0),
-		('0342565986', 'Andres', 'Soriano', 23, 950, 2, 'elchef', 0),
-        ('0930094812', 'Alberto', 'Franco', 45, 780, 4, 'delivery', 0), 
-        ('0639957441', 'Karem', 'Soto', 65, 309, 3, 'mesero1', 0),
-        ('0091231456', 'Juan', 'Flor', 49, 5600, 3, 'mesero2', 0),
-        ('0698035421', 'Ericka', 'Velez', 33, 1325, 5, 'cash', 0);
-
-INSERT INTO Item (ID, Nombre, Descripcion, Precio, Disponibilidad, TiempoPreparacion, IdCategoria, eliminado) 
-VALUES 	(1, 'naranjada', 'jarra de naranja ', 4, 1, 3, 5, 0),
-		(2, 'Jugo de Durazno', 'Jugo Artificial', 1, 1, 0, 6, 0),
-		(3, 'Maduros', 'maduros', 2, 1, 4, 1, 0),
-        (4, 'seco de gallina', 'seco de gallina', 4, 1, 10, 2, 0),
-        (5, 'moros de lentejas', 'moros de lentejas', 7, 1, 13, 2, 0),
-        (6, 'tiramisu', 'tiramisu', 3, 1, 4, 3, 0);
-delimiter $$
-
-create procedure ObtenerEmpleadoPorUsuario(in cadena varchar(255))
-begin
-	select *
-    from Empleado
-    where usuario = cadena;
-end$$
-
-create procedure verificarUsuarioContrasena(in inUsuario varchar(255), in inContrasena varchar(255))
-begin
-	select *
-    from Usuario
-    where usuario = inUsuario and clave = inContrasena;
-end$$
-
-
 
 create procedure AgregarUsuario(in usuario varchar(255), IN contraseña VARCHAR(255))
 begin
@@ -332,10 +256,10 @@ end$$
 delimiter ;
 delimiter $$
 
-create procedure NuevaOrden(in cliente varchar(10), in mesero varchar(10), in mesa int, out NuevaOrden int)
+create procedure NuevaOrden(in mesero varchar(10), in mesa int, out NuevaOrden int)
 begin
-	INSERT INTO Orden(EnCola, pagado, enPreparacion, cocinado, entregado, idCliente, idMesero) 
-    VALUES (0, 0, 0, 0, 0, cliente, mesero);
+	INSERT INTO Orden(pagado, enPreparacion, cocinado, entregado, idMesero) 
+    VALUES (0, 0, 0, 0, mesero);
     
     SELECT LAST_INSERT_ID() into NuevaOrden;
     
@@ -389,6 +313,12 @@ begin
     where Orden.id = inOrden;
 end$$
 
+create procedure BuscarOrden(in inOrden int)
+begin
+	Select * from Orden 
+    where Orden.id = inOrden; 
+end$$
+
 create procedure FaltaIngrediente(in inItem int)
 begin
 	update Item
@@ -396,5 +326,70 @@ begin
     where Item.ID = inItem;
 end$$
 
+create procedure obtenerCantOrden()
+begin
+	Select count(Orden.id) from Orden;
+end$$
+delimiter ;
+
 
 delimiter ;
+INSERT INTO Rol (idRol, nombreRol, eliminado) 
+VALUES 	(1, 'Administrador', 0), 
+		(2, 'Cocinero', 0), 
+		(3, 'Mesero', 0), 
+        (4, 'Repartidor', 0), 
+        (5, 'Cajero', 0);
+
+
+INSERT INTO Categoria_Item (ID, Nombre) 
+VALUES	(1, 'Entrada'), 
+		(2, 'Segundo'), 
+        (3, 'Postre'), 
+        (4, 'Refresco'), 
+        (5, 'Natural'),
+        (6, 'Artificial');
+
+INSERT INTO TipoDePago (ID, Tipo) 
+VALUES 	(1, 'Efectivo'),  
+		(2, 'Tarjeta de Credito'), 
+        (3, 'Dinero Electronico');
+
+INSERT INTO Environments (idEnvi, nombre, eliminado) 
+VALUES 	(1, 'Normal', 0), 
+		(2, 'VIP', 0);
+
+INSERT INTO Mesa (idMesa, asientos, disponibilidad, idEnvi, eliminado) 
+VALUES 	(1, 2, 1, 1, 0), 
+		(2, 2, 1, 1, 0), 
+		(3, 2, 1, 2, 0), 
+        (4, 4, 1, 1, 0), 
+        (5, 4, 1, 2, 0), 
+        (6, 6, 1, 1, 0), 
+        (7, 8, 1, 1, 0);
+
+INSERT INTO Usuario (usuario, clave,eliminado)
+VALUES 	('admin', 'superclave',0), 
+		('cash', '1234',0), 
+        ('delivery', '0987',0), 
+        ('mesero1', 'sssd123',0),
+        ('mesero2', '739873',0),
+        ('chef', '125',0);
+
+INSERT INTO Empleado (cedula, nombres, apellidos, edad, sueldo, idRol, usuario, eliminado) 
+VALUES 	('0578473311', 'Luis', 'Ochoa', 25, 600, 1, 'admin', 0),
+		('0342565986', 'Andres', 'Soriano', 23, 950, 2, 'chef', 0),
+        ('0930094812', 'Alberto', 'Franco', 45, 780, 4, 'delivery', 0), 
+        ('0639957441', 'Karem', 'Soto', 65, 309, 3, 'mesero1', 0),
+        ('0091231456', 'Juan', 'Flor', 49, 5600, 3, 'mesero2', 0),
+        ('0698035421', 'Ericka', 'Velez', 33, 1325, 5, 'cash', 0);
+
+INSERT INTO Item (ID, Nombre, Descripcion, Precio, Disponibilidad, TiempoPreparacion, IdCategoria, eliminado) 
+VALUES 	(1, 'naranjada', 'jarra de naranja ', 4, 1, 3, 5, 0),
+		(2, 'Jugo de Durazno', 'Jugo Artificial', 1, 1, 0, 6, 0),
+		(3, 'Maduros', 'maduros', 2, 1, 4, 1, 0),
+        (4, 'seco de gallina', 'seco de gallina', 4, 1, 10, 2, 0),
+        (5, 'moros de lentejas', 'moros de lentejas', 7, 1, 13, 2, 0),
+        (6, 'tiramisu', 'tiramisu', 3, 1, 4, 3, 0);
+delimiter $$
+

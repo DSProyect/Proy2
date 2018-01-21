@@ -5,6 +5,12 @@
  */
 package TDAs.Ordenes;
 
+import TDAs.DB.Consult;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author User
@@ -16,30 +22,21 @@ public abstract class Orden {
     protected boolean cocinado;
     protected boolean entregado;
     protected int tiempoPreparacion;
-    protected String idCliente;
     protected String idMesero;
     protected String idCocinero;
     protected String idCuenta;
     
-    public Orden(String idOrden, String idCliente, String idMesero, String idCuenta, String idCocinero) {
-        this.idOrden = idOrden;
-        this.idCliente = idCliente;
+    public Orden(String idMesero, String idCuenta, String idCocinero) {
+        aggId();
         this.idMesero = idMesero;
         this.idCuenta = idCuenta;
         this.idCocinero = idCocinero;
+        this.pagado = false;
+        this.cocinado = false;
+        this.entregado = false;
     }
     //verificar este constructor
-    public Orden(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCuenta) {
-        this.idOrden = idOrden;
-        this.total = total;
-        this.pagado = pagado;
-        this.cocinado = cocinado;
-        this.entregado = entregado;
-        this.idCliente = idCliente;
-        this.idMesero = idMesero;
-        this.idCuenta = idCuenta;
-    }
-    
+
 
     public String getIdCuenta() {
         return idCuenta;
@@ -52,10 +49,6 @@ public abstract class Orden {
 
     public String getIdOrden() {
         return idOrden;
-    }
-
-    public void setIdOrden(String idPedido) {
-        this.idOrden = idPedido;
     }
 
     public double getTotal() {
@@ -91,14 +84,6 @@ public abstract class Orden {
         this.entregado = entregado;
     }
 
-    public String getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(String idCliente) {
-        this.idCliente = idCliente;
-    }
-
     public String getIdMesero() {
         return idMesero;
     }
@@ -117,6 +102,15 @@ public abstract class Orden {
 
     public int getTiempoPreparacion() {
         return tiempoPreparacion;
+    }
+
+    private void aggId() {
+        try {
+            ResultSet rs = Consult.getInstancia().obtenerIdOrden();
+            idOrden = Integer.toString(rs.getInt(1)+1);
+        } catch (SQLException ex) {
+            Logger.getLogger(Orden.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

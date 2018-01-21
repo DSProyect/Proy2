@@ -10,23 +10,15 @@ package TDAs.Ordenes;
  * @author User
  */
 public class OrdenNormal extends Orden {
-    private String idMesa;
 
     /*public OrdenNormal(String idMesa, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero) {
         super(idOrden, total, pagado, cocinado, entregado, idCliente, idMesero);
         this.idMesa = idMesa;
     }*/
 
-    public OrdenNormal(String idMesa, String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, String idCliente, String idMesero, String idCuenta) {
-        super(idOrden, total, pagado, cocinado, entregado, idCliente, idMesero, idCuenta);
-        this.idMesa = idMesa;
+    public OrdenNormal(String idMesero, String idCuenta, String idCocinero) {
+        super(idMesero, idCuenta, idCocinero);
     }
 
-    public String getIdMesa() {
-        return idMesa;
-    }
-
-    public void setIdMesa(String idMesa) {
-        this.idMesa = idMesa;
-    }
+    
 }

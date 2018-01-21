@@ -13,15 +13,13 @@ import java.util.Date;
  * @author User
  */
 public class PayBill {
-    protected String id;
     protected Date fecha;
     protected double total;
     protected Estrategia estrategiaDePago;
     protected String idCliente, idCuenta; 
     protected int Descuento;
 
-    public PayBill(String id, Date fecha, Estrategia estrategiaDePago,int descuento, String idCuenta, String idcliente) {
-        this.id = id;
+    public PayBill(Date fecha, Estrategia estrategiaDePago,int descuento, String idCuenta, String idcliente) {
         this.fecha = fecha;
         this.estrategiaDePago = estrategiaDePago;
         this.idCliente = idcliente;
@@ -61,13 +59,6 @@ public class PayBill {
         this.idCliente = idCliente;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Date getFecha() {
         return fecha;
@@ -94,6 +85,5 @@ public class PayBill {
     
     public void pagar(){
         this.estrategiaDePago.pay(total);
-        //en la base de datos cambiar a pagado la orden
     }
 }

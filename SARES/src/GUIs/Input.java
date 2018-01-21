@@ -9,6 +9,7 @@ import TDAs.Actores.Admin;
 import TDAs.Actores.Empleado;
 import TDAs.Actores.EmpleadoFactory;
 import TDAs.Actores.EmpleadoFactoryMethod;
+import TDAs.Actores.Mesero;
 import javax.swing.JOptionPane;
 
 /**
@@ -114,16 +115,15 @@ public class Input extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        if(txtUsuario.getText().equals("")){
+        if(txtUsuario.getText().equals("") || txtPass.getPassword().length == 0){
             JOptionPane.showMessageDialog(null, "INGRESE TODOS LOS CAMPOS");
         }
-        if(txtPass.getPassword().equals("")){
-            JOptionPane.showMessageDialog(null, "INGRESE TODOS LOS CAMPOS");
-        }
+        
         else{ //Verificar si existe el usuario y cree el empleado y acceda a su interfaz
             //EmpleadoFactoryMethod fac = new EmpleadoFactory();
             //Empleado emp= fac.crearEmpleado(identificacion, nombres, apellidos, WIDTH, ERROR, user);
-            Empleado emp = new Admin("0924865322", "jairo", "caicedo", 23, 250, "jaipcaic"); //comprobar
+            //Empleado emp = new Admin("0924865322", "jairo", "caicedo", 23, 250, "jaipcaic"); //comprobar
+            Empleado emp = new Mesero("0924865322", "jairo", "caicedo", 23, 500, "jairito");
             emp.getCtrl().view();
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
