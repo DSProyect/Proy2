@@ -17,7 +17,7 @@ public class DB {
     public DB() {
         url = "jdbc:mysql://127.0.0.1:3306/SARES";
         user = "root";
-        password = "1234";
+        password = "doraemon31";
     }
 
     public DB(String url, String user, String password) {

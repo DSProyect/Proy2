@@ -10,6 +10,7 @@ import TDAs.Actores.Empleado;
 import TDAs.Actores.EmpleadoFactory;
 import TDAs.Actores.EmpleadoFactoryMethod;
 import TDAs.Actores.Mesero;
+import TDAs.Actores.Usuario;
 import javax.swing.JOptionPane;
 
 /**
@@ -123,8 +124,10 @@ public class Input extends javax.swing.JFrame {
             //EmpleadoFactoryMethod fac = new EmpleadoFactory();
             //Empleado emp= fac.crearEmpleado(identificacion, nombres, apellidos, WIDTH, ERROR, user);
             //Empleado emp = new Admin("0924865322", "jairo", "caicedo", 23, 250, "jaipcaic"); //comprobar
-            Empleado emp = new Mesero("0924865322", "jairo", "caicedo", 23, 500, "jairito");
-            emp.getCtrl().view();
+            //Empleado emp = new Mesero("0924865322", "jairo", "caicedo", 23, 500, "jairito");
+            //emp.getCtrl().view();
+            Usuario usuario = new Usuario(txtUsuario.getText(),txtPass.getText());
+            usuario.iniciarSesion();
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 

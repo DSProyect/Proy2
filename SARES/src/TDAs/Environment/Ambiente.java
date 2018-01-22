@@ -19,6 +19,10 @@ public abstract class Ambiente {
         this.id = id;
     }
 
+    public Ambiente() {
+    }
+
+    
     public String getId() {
         return id;
     }

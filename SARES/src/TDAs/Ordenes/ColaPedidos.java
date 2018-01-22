@@ -5,10 +5,23 @@
  */
 package TDAs.Ordenes;
 
+import java.sql.ResultSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  *
  * @author Carmina
  */
-public interface ColaPedidos {
+public class ColaPedidos {
+    //Queue<Orden> ordenes = new PriorityQueue((Orden o1,Orden o2) -> o1.isPrioridad() - o2.isPrioridad());
+    
+    public ColaPedidos(){
+    }
+
+    public Queue<Orden> colaOrden(ResultSet r) {
+        return null;
+    }
+    
     
 }

@@ -25,6 +25,7 @@ public abstract class Orden {
     protected String idMesero;
     protected String idCocinero;
     protected String idCuenta;
+    protected boolean prioridad = false;
     
     public Orden(String idMesero, String idCuenta, String idCocinero) {
         aggId();
@@ -52,7 +53,19 @@ public abstract class Orden {
         this.idCocinero = idCocinero;
         this.idCuenta = idCuenta;
     }
+    
+    public void tienePrioridad(){
+        if(Consult.getInstancia().tienePrioridadOrden(idOrden)){
+            this.prioridad = true;
+        }
+    }
 
+    public boolean isPrioridad() {
+        return prioridad;
+    }
+    
+    
+    
     public void setIdCuenta(String idCuenta) {
         this.idCuenta = idCuenta;
     }
@@ -116,11 +129,13 @@ public abstract class Orden {
     }
 
     private void aggId() {
-        try {
-            ResultSet rs = Consult.getInstancia().obtenerIdOrden();
-            idOrden = Integer.toString(rs.getInt(1)+1);
-        } catch (SQLException ex) {
-            Logger.getLogger(Orden.class.getName()).log(Level.SEVERE, null, ex);
+        if(Integer.parseInt(this.idOrden) == 0 ){
+            try {
+                ResultSet rs = Consult.getInstancia().obtenerIdOrden();
+                idOrden = Integer.toString(rs.getInt(1)+1);
+            } catch (SQLException ex) {
+                Logger.getLogger(Orden.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     

@@ -7,6 +7,10 @@ package TDAs.Actores;
 
 import Constants.Constants;
 import TDAs.Control.CtrlChef;
+import TDAs.DB.Consult;
+import TDAs.Ordenes.ColaPedidos;
+import TDAs.Ordenes.Orden;
+import java.util.Queue;
 
 
 /**
@@ -14,6 +18,7 @@ import TDAs.Control.CtrlChef;
  * @author User
  */
 public class Chef extends Empleado implements Update{
+    Queue<Orden> ordenes = new ColaPedidos().colaOrden(Consult.getInstancia().obtenerOrdenesNuevas());
     
     
     public Chef(String identificacion, String nombres, String apellidos, int edad, double sueldo, String usuario) {

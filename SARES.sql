@@ -145,7 +145,7 @@ CREATE TABLE Factura (
     FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID),
     FOREIGN KEY (idMesa) REFERENCES Mesa(idMesa)
 );
-
+ 
 CREATE TABLE Detalle_Factura(
 	id_detalle int,
     id_factura int,
@@ -174,7 +174,7 @@ create procedure ObtenerEmpleadoPorUsuario(in cadena varchar(255))
 begin
 	select *
     from Empleado
-    where usuario = cadena;
+    where Empleado.usuario = cadena;
 end$$
 
 create procedure AgregarUsuario(in usuario varchar(255), IN contraseña VARCHAR(255))
@@ -244,13 +244,16 @@ end$$
 
 create procedure ActualizarMesa(in id int, in Asientos int, in Disponibilidad tinyint, in Ambiente int)
 begin
-
-
 	update Mesa
 	set Mesa.asientos = Asientos, Mesa.disponibilidad = Disponibilidad, Mesa.idEnvi = Ambiente
     where Mesa.idMesa = id;
 end$$
 
+create procedure obtenerMesa(in id int)
+begin
+	select * from Mesa
+    where Mesa.idMesa = id;
+end$$
 create procedure VerMesas()
 begin
 	select * from Mesa;
@@ -358,17 +361,16 @@ end$$
 
 create procedure aggCliente(in cedula varchar(10), in nombre varchar(255), in apellido varchar(255), in dir varchar(255))
 begin
-	Insert INTO Cliente (ced,LastName,FirstName,Direccion)
+	Insert INTO Sares.Cliente (ced,LastName,FirstName,Direccion)
     VALUES (cedula, apellido, nombre, dir);
 end$$
 
-create procedure actualizarCliente(in cedula varchar(10), in nombre varchar(255), in apellido varchar(255), in dir varchar(255), in eliminado boolean)
+create procedure actualizarCliente(in cedula varchar(10), in nombre varchar(255), in apellido varchar(255), in dir varchar(255))
 begin
 	Update Cliente
     set Cliente.LastName = apellido,
         Cliente.FirstName = nombre,
-        Cliente.Direccion = dir,
-        Cliente.eliminado = eliminado
+        Cliente.Direccion = dir
 	where Cliente.ced = cedula;
 end$$
 
@@ -378,6 +380,24 @@ begin
     where Cliente.ced = cedula;
 end$$
 
+create procedure tienePrioridadOrden(in idOrden int)
+begin
+	Select * 
+    from Orden ord, Factura cu
+    where ord.ID = cu.ID && cu.TratoEspecial = 1 && ord.ID = idOrden;
+end$$
+
+create procedure existeCliente(in idCliente varchar(10))
+begin
+	Select * from Cliente
+    where Cliente.ced = idCliente;
+end$$	
+
+create procedure obtenerCliente(in idCliente varchar(10))
+begin
+	Select * from Cliente
+    where Cliente.ced = idCliente;
+end$$	
 
 delimiter ;
 
