@@ -44,7 +44,7 @@ CREATE TABLE Mesa(
     asientos int not null,
     disponibilidad boolean not null,
     idEnvi int not null,
-    eliminado boolean not null,
+    eliminado boolean,
     Primary Key (idMesa),
     foreign key (idEnvi) references Environments(idEnvi)
 );
@@ -55,7 +55,7 @@ CREATE TABLE Cliente (
     LastName varchar(255) NOT NULL,
     FirstName varchar(255),
     Direccion varchar(255),
-    eliminado boolean not null,
+    eliminado boolean default 0,
     PRIMARY KEY (ced)
 );
 
@@ -140,6 +140,7 @@ CREATE TABLE Factura (
     TipoDePago int,
     TratoEspecial boolean,
     idMesa int not null,
+    Pagado boolean default 0,
     PRIMARY KEY (ID),
     FOREIGN KEY (Id_cliente) REFERENCES Cliente(ced),
     FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID),
@@ -357,6 +358,23 @@ create procedure verCuenta( in idCuenta int)
 begin
 	Select * from Factura
     where Factura.ID = idCuenta;
+end$$
+
+create procedure cuentaDisponible(in idCuenta int)
+begin
+	Select * from Factura
+    where Factura.ID = idCuenta AND Factura.Pagado=0;
+end$$
+
+create procedure aggClienteCuenta(in idCuenta int, in cedula varchar(10), in Descuento int)
+begin
+	#Insert into Factura ( ID, Id_cliente, Descuento, Pagado)
+    Update Factura
+    set 
+		Factura.Id_cliente = cedula,
+        Factura.Descuento = Descuento,
+        Factura.Pagado = 1
+    where Factura.ID = idCuenta AND Factura.Pagado = false;
 end$$
 
 create procedure aggCliente(in cedula varchar(10), in nombre varchar(255), in apellido varchar(255), in dir varchar(255))
