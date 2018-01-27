@@ -38,9 +38,9 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtCuenta" pref="237" max="32767" attributes="0"/>
                           <Component id="txtCedula" max="32767" attributes="0"/>
-                          <Component id="txtDescuento" max="32767" attributes="0"/>
                           <Component id="cmbTipo" alignment="0" pref="237" max="32767" attributes="0"/>
                           <Component id="txtTotal" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtDescuento" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -100,11 +100,6 @@
         <Property name="text" type="java.lang.String" value="Descuento:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDescuento">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cedula:"/>
@@ -149,6 +144,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTotal">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtDescuento">
     </Component>
   </SubComponents>
 </Form>

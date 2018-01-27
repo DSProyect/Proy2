@@ -14,6 +14,11 @@ public class Mesa {
         this.eliminado = false;
     }
 
+    public Mesa(int asientos, String ambiente) {
+        this.asientos = asientos;
+        this.ambiente = new CrearAmbiente().crearAmbiente(ambiente.toUpperCase());
+    }
+
     public String getIdMesa() {
         return idMesa;
     }

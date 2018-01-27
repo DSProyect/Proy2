@@ -171,7 +171,7 @@ begin
     where usuario = inUsuario and clave = inContrasena;
 end$$
 
-create procedure ObtenerEmpleadoPorUsuario(in cadena varchar(255))
+create procedure ObtenerEmpleadoPorUsuario(in cadena varchar(50))
 begin
 	select *
     from Empleado
@@ -278,6 +278,8 @@ create procedure EliminarOrden(in inOrden int)
 begin
 	delete from Orden
     where Orden.id = inOrden;
+    delete from Detalle_Orden
+    where Detalle_Orden.ID_Orden = inOrden;
 end$$
 
 create procedure EliminarItemOrden(in inOrden int, in inItem int)

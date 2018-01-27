@@ -34,7 +34,6 @@ public class CobrarCuentas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtCuenta = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtDescuento = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -42,14 +41,13 @@ public class CobrarCuentas extends javax.swing.JFrame {
         btnCobrar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
+        txtDescuento = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("IdCuenta:");
 
         jLabel2.setText("Descuento:");
-
-        txtDescuento.setText("0");
 
         jLabel3.setText("Cedula:");
 
@@ -90,9 +88,9 @@ public class CobrarCuentas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                             .addComponent(txtCedula)
-                            .addComponent(txtDescuento)
                             .addComponent(cmbTipo, 0, 237, Short.MAX_VALUE)
-                            .addComponent(txtTotal)))
+                            .addComponent(txtTotal)
+                            .addComponent(txtDescuento)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(145, 145, 145)
                         .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))

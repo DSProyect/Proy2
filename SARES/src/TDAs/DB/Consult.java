@@ -6,12 +6,15 @@
 package TDAs.DB;
 
 import TDAs.Environment.Ambiente;
+import TDAs.Environment.CrearAmbiente;
 import TDAs.Environment.Mesa;
 import TDAs.Ordenes.Orden;
 import TDAs.Ordenes.OrdenItem;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -62,7 +65,7 @@ public class Consult {
     }
     
     public ResultSet obtenerPersonalPorUsuario(String usuario){
-        cadenaDeLlamada = "{CALL ObtenerPersonalPorUsuario(?)}";
+        cadenaDeLlamada = "{CALL ObtenerEmpleadoPorUsuario(?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
@@ -75,13 +78,28 @@ public class Consult {
         return resultado;
     }
     
-    public boolean addMesa(Mesa mesa){
+    public boolean eliminarUsuario(String usuario){
+        cadenaDeLlamada = "{CALL EliminarUsuario(?)}";
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setString(1, usuario);
+            resultado = llamada.executeQuery();
+            if(resultado.isBeforeFirst()){
+                return true;
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+    
+    public boolean addMesa(Mesa mesa){ //Correcto
         cadenaDeLlamada = "{CALL AgregarMesa(?,?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
             llamada.setString(1, Integer.toString(mesa.getAsientos()));
-            llamada.setString(2, mesa.getAmbiente().getId());
+            llamada.setInt(2, Integer.parseInt(mesa.getAmbiente().getId()));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -92,14 +110,14 @@ public class Consult {
         return false;
     }
     
-    public boolean addItemOrden(OrdenItem ordenItem){
+    public boolean addItemOrden(OrdenItem ordenItem){ //Correcto
         cadenaDeLlamada = "{CALL AgregarItemAOrden(?,?,?,?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, ordenItem.getIdItem());
-            llamada.setString(2, ordenItem.getIdOrden());
-            llamada.setString(3, Integer.toString(ordenItem.getCantidadArticulos()));
+            llamada.setInt(1, Integer.parseInt(ordenItem.getIdItem()));
+            llamada.setInt(2, Integer.parseInt(ordenItem.getIdOrden()));
+            llamada.setInt(3, ordenItem.getCantidadArticulos());
             llamada.setString(4, ordenItem.getObservaciones());
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
@@ -111,14 +129,14 @@ public class Consult {
         return false;
     }
     
-    public boolean actualizarItemOrden(OrdenItem ordenItem){
+    public boolean actualizarItemOrden(OrdenItem ordenItem){ //Correcto
         cadenaDeLlamada = "{CALL ActualizarDetalleOrden(?,?,?,?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, ordenItem.getIdItem());
-            llamada.setString(2, ordenItem.getIdOrden());
-            llamada.setString(3, Integer.toString(ordenItem.getCantidadArticulos()));
+            llamada.setInt(1, Integer.parseInt(ordenItem.getIdItem()));
+            llamada.setInt(2, Integer.parseInt(ordenItem.getIdOrden()));
+            llamada.setInt(3, ordenItem.getCantidadArticulos());
             llamada.setString(4, ordenItem.getObservaciones());
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
@@ -130,12 +148,12 @@ public class Consult {
         return false;
     }
     
-    public boolean eliminarOrden(String idOrden){
+    public boolean eliminarOrden(String idOrden){ //Correcto
         cadenaDeLlamada = "{CALL EliminarOrden(?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
+            llamada.setInt(1, Integer.parseInt(idOrden));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -146,15 +164,15 @@ public class Consult {
         return false;
     }
     
-    public boolean aggOrden(Orden orden){
+    public boolean aggOrden(Orden orden){ //Correcto
         cadenaDeLlamada = "{CALL NuevaOrden(?,?,?)}";
         resultado = null;
         //Corregir el metodo en la base de datos debe ser OrdenCuenta
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
             llamada.setString(1, orden.getIdMesero());
-            llamada.setString(2, orden.getIdCuenta());
-            llamada.setString(3, orden.getIdOrden());
+            llamada.setInt(2, Integer.parseInt(orden.getIdCuenta()));
+            llamada.setInt(3, Integer.parseInt(orden.getIdOrden()));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -170,7 +188,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idMesa);
+            llamada.setInt(1, Integer.parseInt(idMesa));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -186,8 +204,8 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
-            llamada.setString(2, idChef);
+            llamada.setInt(1, Integer.parseInt(idOrden));
+            llamada.setInt(2, Integer.parseInt(idChef));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -203,7 +221,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
+            llamada.setInt(1, Integer.parseInt(idOrden));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -219,7 +237,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idItem);
+            llamada.setInt(1, Integer.parseInt(idItem));
             resultado = llamada.executeQuery();
             resultado.next();
         }catch(SQLException ex){
@@ -232,8 +250,8 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
-            llamada.setString(2, idItem);
+            llamada.setInt(1, Integer.parseInt(idOrden));
+            llamada.setInt(2, Integer.parseInt(idItem));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -244,15 +262,15 @@ public class Consult {
         return false;
     }
     
-    public boolean actualizarMesa(String idMesa, int asientos, int disponibilidad, Ambiente ambiente){
+    public boolean actualizarMesa(String idMesa, int asientos, int disponibilidad, String ambiente){
         cadenaDeLlamada = "{CALL ActualizarMesa(?,?,?,?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idMesa);
+            llamada.setInt(1, Integer.parseInt(idMesa));
             llamada.setString(2, Integer.toString(asientos));
-            llamada.setString(3, Integer.toString(disponibilidad));
-            llamada.setString(4, ambiente.getNombre());
+            llamada.setInt(3, disponibilidad);
+            llamada.setInt(4, Integer.parseInt(new CrearAmbiente().crearAmbiente(ambiente).getId()));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -262,12 +280,13 @@ public class Consult {
         }
         return false;
     }
+    
     public ResultSet obtenerMesa(String idMesa){
         cadenaDeLlamada = "{CALL obtenerMesa(?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idMesa);
+            llamada.setInt(1, Integer.parseInt(idMesa));
             resultado = llamada.executeQuery();
             resultado.next();
         }catch(SQLException ex){
@@ -275,6 +294,7 @@ public class Consult {
         }
         return resultado;
     }
+    
     public boolean ordenPagada(String idOrden){
         return true;
     }
@@ -308,7 +328,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idAmbiente);
+            llamada.setInt(1, Integer.parseInt(idAmbiente));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -326,22 +346,6 @@ public class Consult {
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
             llamada.setString(1, usuario);
             llamada.setString(2, nuevoUsuario);
-            resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
-                return true;
-            }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-        }
-        return false;
-    }
-    
-    public boolean eliminarUsuario(String usuario){
-        cadenaDeLlamada = "{CALL EliminarUsuario(?)}";
-        resultado = null;
-        try{
-            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, usuario);
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -389,7 +393,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
+            llamada.setInt(1, Integer.parseInt(idOrden));
             resultado = llamada.executeQuery();
             resultado.next();
         }catch(SQLException ex){
@@ -403,7 +407,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
+            llamada.setInt(1, Integer.parseInt(idOrden));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
@@ -427,6 +431,7 @@ public class Consult {
         return resultado;
 
     }
+    
     public ResultSet obtenerOrdenesNuevas(){
         cadenaDeLlamada = "{CALL obtenerOrdenesNuevas()}";
         resultado = null;
@@ -500,7 +505,7 @@ public class Consult {
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, idOrden);
+            llamada.setInt(1, Integer.parseInt(idOrden));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;
