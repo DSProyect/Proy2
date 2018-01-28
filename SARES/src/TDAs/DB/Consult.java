@@ -262,14 +262,14 @@ public class Consult {
         return false;
     }
     
-    public boolean actualizarMesa(String idMesa, int asientos, int disponibilidad, String ambiente){
+    public boolean actualizarMesa(String idMesa, int asientos, boolean disponibilidad, String ambiente){
         cadenaDeLlamada = "{CALL ActualizarMesa(?,?,?,?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
             llamada.setInt(1, Integer.parseInt(idMesa));
-            llamada.setString(2, Integer.toString(asientos));
-            llamada.setInt(3, disponibilidad);
+            llamada.setInt(2, asientos);
+            llamada.setBoolean(3, disponibilidad);
             llamada.setInt(4, Integer.parseInt(new CrearAmbiente().crearAmbiente(ambiente).getId()));
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
@@ -591,7 +591,20 @@ public class Consult {
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
             return false;
-        }
-        
+        }       
+    }
+    
+    public ResultSet obtenerAmbiente(String id){
+        cadenaDeLlamada = "{CALL obtenerAmbiente(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setInt(1, Integer.parseInt(id));
+            resultado = llamada.executeQuery();
+            resultado.next();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }       
+        return resultado;
     }
 }

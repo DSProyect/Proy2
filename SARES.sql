@@ -230,10 +230,17 @@ begin
 	select * from  Environments;
 end$$
 
+create procedure obtenerAmbiente(in id int)
+begin
+	select * 
+    from Environments
+    where Environments.idEnvi = id;
+end$$
+
 create procedure AgregarMesa(in inAsientos int, in inEnvi int)
 begin
 	INSERT INTO Sares.Mesa (asientos, disponibilidad, idEnvi, eliminado)
-	VALUES 	(inAsientos, 1, inAmbiente, 0);
+	VALUES 	(inAsientos, 1, inEnvi, 0);
 end$$
 
 create procedure EliminarMesa(in id INT)
@@ -255,6 +262,7 @@ begin
 	select * from Mesa
     where Mesa.idMesa = id;
 end$$
+ 
 create procedure VerMesas()
 begin
 	select * from Mesa;

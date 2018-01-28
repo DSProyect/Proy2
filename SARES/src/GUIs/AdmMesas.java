@@ -9,6 +9,8 @@ import TDAs.DB.Consult;
 import TDAs.Environment.Ambiente;
 import TDAs.Environment.CrearAmbiente;
 import TDAs.Environment.Mesa;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -72,8 +74,18 @@ public class AdmMesas extends javax.swing.JFrame {
         });
 
         btnUpdateMesa.setText("ModificarMesa");
+        btnUpdateMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateMesaActionPerformed(evt);
+            }
+        });
 
         btnBuscarMesa.setText("BuscarMesa");
+        btnBuscarMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarMesaActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("EliminarMesa");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -128,10 +140,9 @@ public class AdmMesas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnAggMesa, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                        .addComponent(btnUpdateMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBuscarMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnAggMesa, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(btnUpdateMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuscarMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(28, 28, 28))
         );
 
@@ -158,8 +169,41 @@ public class AdmMesas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAggMesaActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        if(isEmpty())
+            JOptionPane.showMessageDialog(null,"llene los campos");
+        else{
+            Consult.getInstancia().eliminarMesa(txtIdMesa.getText());
+        }
+        limpiar();
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnUpdateMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateMesaActionPerformed
+        if(isEmpty())
+            JOptionPane.showMessageDialog(null,"llene los campos");
+        else{
+            Consult.getInstancia().actualizarMesa(txtIdMesa.getText(),Integer.parseInt(txtSillas.getText()),false,txtAmbiente.getText().toUpperCase());
+            
+        }
+        limpiar();
+    }//GEN-LAST:event_btnUpdateMesaActionPerformed
+
+    private void btnBuscarMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMesaActionPerformed
+        if(txtIdMesa.getText().length()>0){
+            ResultSet rs = Consult.getInstancia().obtenerMesa(txtIdMesa.getText());
+            try{
+                ResultSet rsA = Consult.getInstancia().obtenerAmbiente(Integer.toString(rs.getInt(4)));
+                txtSillas.setText(Integer.toString(rs.getInt(2)));
+                txtAmbiente.setText(rsA.getString(2));
+            }
+            catch(SQLException ex){
+                System.out.println(ex.getMessage());
+            }
+        }
+            
+        else{
+            JOptionPane.showMessageDialog(null,"Ingrese el ID");
+        }
+    }//GEN-LAST:event_btnBuscarMesaActionPerformed
 
     private void limpiar(){
         txtAmbiente.setText("");
