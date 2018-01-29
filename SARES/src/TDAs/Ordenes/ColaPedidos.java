@@ -5,7 +5,9 @@
  */
 package TDAs.Ordenes;
 
+import TDAs.Actores.Observador;
 import java.sql.ResultSet;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -13,15 +15,47 @@ import java.util.Queue;
  *
  * @author Carmina
  */
-public class ColaPedidos {
-    //Queue<Orden> ordenes = new PriorityQueue((Orden o1,Orden o2) -> o1.isPrioridad() - o2.isPrioridad());
+public class ColaPedidos extends Observador{
+    private static ColaPedidos instancia = new ColaPedidos();
+    private Queue<Integer> colaNormal;
+    private Queue<Integer> colaPrioridad;
+    private Queue<Integer> colaPorEntregar;
     
-    public ColaPedidos(){
-    }
+    private ColaPedidos(){
+        colaNormal = new LinkedList<>();
+        colaPrioridad = new LinkedList<>();
+        colaPorEntregar = new LinkedList<>();
+    }   
 
-    public Queue<Orden> colaOrden(ResultSet r) {
-        return null;
+    public void addPedidoNormal(int idOrden){
+        colaNormal.offer(idOrden);
+        notificarObservadores();
     }
     
+    public void addPedidoPrioridad(int idOrden){
+        colaPrioridad.offer(idOrden);
+        notificarObservadores();
+    }
     
+    public void addPedidoPorEntregar(int idOrden){
+        colaPorEntregar.offer(idOrden);
+        notificarObservadores();
+    }
+    
+    public int atenderPedidoNormal(){
+        return colaNormal.poll();
+    }
+    
+    public int atenderPedidoPrioridad(){
+        return colaPrioridad.poll();
+    }
+    
+    public int entregarPedido(){
+        return colaPorEntregar.poll();
+    }
+    
+    public static ColaPedidos getInstancia(){
+        return instancia;
+    }
+          
 }

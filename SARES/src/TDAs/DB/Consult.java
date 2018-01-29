@@ -216,12 +216,12 @@ public class Consult {
         return false;
     }
     
-    public boolean ordenTerminada(String idOrden){
+    public boolean ordenTerminada(int idOrden){
         cadenaDeLlamada = "{CALL OrdenTerminada(?)}";
         resultado = null;
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setInt(1, Integer.parseInt(idOrden));
+            llamada.setInt(1, idOrden);
             resultado = llamada.executeQuery();
             if(resultado.isBeforeFirst()){
                 return true;

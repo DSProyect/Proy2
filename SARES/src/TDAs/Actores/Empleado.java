@@ -20,6 +20,9 @@ public abstract class Empleado {
     protected String usuario;
     protected int tipoEmp;
     protected Ctrl ctrl;
+
+    public Empleado() {
+    }
     
 
     public Empleado(String identificacion, String nombres, String apellidos, int Edad, double sueldo, String usuario) {

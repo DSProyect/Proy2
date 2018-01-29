@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package TDAs.Actores;
 
 import Constants.Constants;
@@ -12,14 +8,8 @@ import TDAs.Ordenes.ColaPedidos;
 import TDAs.Ordenes.Orden;
 import java.util.Queue;
 
-
-/**
- *
- * @author User
- */
 public class Chef extends Empleado implements Update{
-    Queue<Orden> ordenes = new ColaPedidos().colaOrden(Consult.getInstancia().obtenerOrdenesNuevas());
-    
+    ColaPedidos cola = ColaPedidos.getInstancia();
     
     public Chef(String identificacion, String nombres, String apellidos, int edad, double sueldo, String usuario) {
         super(identificacion, nombres, apellidos, edad, sueldo, usuario);
@@ -27,10 +17,22 @@ public class Chef extends Empleado implements Update{
         ctrl = new CtrlChef(this);
     }
     
+    public Chef(){}
+    
+    public void cocinarOrden(int idOrden){
+        System.out.println("Cocinando Orden N°: " + idOrden);
+    }
+    
+    public void ordenTerminada(int idOrden){
+        System.out.println("Orden terminada N°: " + idOrden);
+        Consult.getInstancia().ordenTerminada(idOrden);
+    }
+    
+    
 
     @Override
     public void update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("La ORDEN esta preparada para ser Entregada");
     }
     
 }
