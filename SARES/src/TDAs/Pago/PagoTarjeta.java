@@ -12,6 +12,9 @@ package TDAs.Pago;
 public class PagoTarjeta implements Estrategia {
     private int numeroCuenta;
 
+    public PagoTarjeta() {
+    }
+
     public PagoTarjeta(int numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
     }

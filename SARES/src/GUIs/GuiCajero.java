@@ -30,7 +30,7 @@ public class GuiCajero extends javax.swing.JFrame {
         btnInformacion = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnInformacion.setText("Informacion Cliente");
         btnInformacion.addActionListener(new java.awt.event.ActionListener() {

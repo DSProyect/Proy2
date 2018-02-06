@@ -27,16 +27,15 @@ public abstract class Orden {
     protected String idCuenta;
     protected boolean prioridad = false;
     
-    public Orden(String idMesero, String idCuenta, String idCocinero) {
-        aggId();
+    public Orden(String idMesero, String idCuenta) {
         this.idMesero = idMesero;
         this.idCuenta = idCuenta;
-        this.idCocinero = idCocinero;
         this.pagado = false;
         this.cocinado = false;
         this.entregado = false;
     }
     //verificar este constructor
+    
     
     public String getIdCuenta() {
         return idCuenta;
@@ -128,7 +127,7 @@ public abstract class Orden {
         return tiempoPreparacion;
     }
 
-    private void aggId() {
+    /*private void aggId() {
         if(Integer.parseInt(this.idOrden) == 0 ){
             try {
                 ResultSet rs = Consult.getInstancia().obtenerIdOrden();
@@ -137,6 +136,6 @@ public abstract class Orden {
                 Logger.getLogger(Orden.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
+    }*/
     
 }

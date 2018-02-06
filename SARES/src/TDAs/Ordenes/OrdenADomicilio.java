@@ -12,8 +12,8 @@ package TDAs.Ordenes;
 public class OrdenADomicilio extends Orden {
     private String direccionEntrega;
 
-    public OrdenADomicilio(String idMesero, String idCuenta, String idCocinero, String dirrecionEntrega) {
-        super(idMesero, idCuenta, idCocinero);
+    public OrdenADomicilio(String idMesero, String idCuenta, String dirrecionEntrega) {
+        super(idMesero, idCuenta);
         this.direccionEntrega = direccionEntrega;
     }
 

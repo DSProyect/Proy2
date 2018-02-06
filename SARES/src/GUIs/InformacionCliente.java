@@ -5,7 +5,10 @@
  */
 package GUIs;
 
+import TDAs.DB.ActualizarDB;
 import TDAs.DB.Consult;
+import TDAs.DB.EliminarDB;
+import TDAs.DB.IngresosDB;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -47,7 +50,7 @@ public class InformacionCliente extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Cedula:");
 
@@ -151,7 +154,7 @@ public class InformacionCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "LLENE TODOS LOS CAMPOS");
         else{
             if(Consult.getInstancia().existeCliente(txtCedula.getText())){
-                Consult.getInstancia().actualizarCliente(txtCedula.getText(), txtNombre.getText(), txtApellido.getText(), txtDireccion.getText());
+                ActualizarDB.getInstancia().actualizarCliente(txtCedula.getText(), txtNombre.getText(), txtApellido.getText(), txtDireccion.getText());
                 JOptionPane.showMessageDialog(null, "CLIENTE ACTUALIZADO");
             }
             else
@@ -167,7 +170,7 @@ public class InformacionCliente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "CLIENTE Ya Existe");
             }
             else{
-                Consult.getInstancia().aggCliente(txtCedula.getText(), txtNombre.getText(), txtApellido.getText(), txtDireccion.getText());
+                IngresosDB.getInstancia().aggCliente(txtCedula.getText(), txtNombre.getText(), txtApellido.getText(), txtDireccion.getText());
                 JOptionPane.showMessageDialog(null, "CLIENTE Añadido");
             }
         }
@@ -178,7 +181,7 @@ public class InformacionCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingrese la cedula");
         else{
             if(Consult.getInstancia().existeCliente(txtCedula.getText())){
-                Consult.getInstancia().eliminarCliente(txtCedula.getText());
+                EliminarDB.getInstancia().eliminarCliente(txtCedula.getText());
             }
             else
                 JOptionPane.showMessageDialog(null, "CLIENTE NO EXISTE");

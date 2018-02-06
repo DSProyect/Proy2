@@ -83,47 +83,6 @@ CREATE TABLE Item(
     FOREIGN KEY (IdCategoria) references Categoria_Item(ID)
 );
 
-CREATE TABLE Orden (
-	id int not null auto_increment,
-    pagado boolean not null,
-    enPreparacion boolean not null,
-    cocinado boolean not null,
-    entregado boolean not null,
-    idMesero varchar(10) not null, 
-    idChef varchar(10) not null,
-    
-    PRIMARY KEY (id),
-    FOREIGN KEY (idMesero) REFERENCES Empleado(cedula),
-    FOREIGN KEY (idChef) REFERENCES Empleado(cedula)
-);
-
-
-CREATE TABLE Detalle_Orden(
-
-	ID_detalle int NOT NULL auto_increment,
-    ID_Orden int NOT NULL,
-    ID_Item int NOT NULL,
-    cantidad int,
-    Observaciones varchar(255),
-    
-    
-    PRIMARY KEY (ID_detalle),
-    FOREIGN KEY (ID_Orden) references Orden(id),
-    foreign key (ID_Item) references Item(ID)
-);
-
-CREATE TABLE MesaOrden(
-	id int not null auto_increment,
-    idMesa int not null,
-    idOrden int not null,
-    fecha Date,
-    hora time,
-    
-    primary key (id),
-    foreign key (idMesa) references Mesa(idMesa),
-    foreign key (idOrden) references Orden(id)
-);
-
 CREATE TABLE TipoDePago(
 	ID int,
     Tipo varchar(30),
@@ -145,6 +104,48 @@ CREATE TABLE Factura (
     FOREIGN KEY (Id_cliente) REFERENCES Cliente(ced),
     FOREIGN KEY (TipoDePago) REFERENCES TipoDePago(ID),
     FOREIGN KEY (idMesa) REFERENCES Mesa(idMesa)
+);
+
+CREATE TABLE Orden (
+	id int not null auto_increment,
+    pagado boolean default 0,
+    enPreparacion boolean default 0,
+    cocinado boolean default 0,
+    entregado boolean default 0,
+    idMesero varchar(10) not null, 
+    idChef varchar(10),
+    idCuenta int not null,
+    
+    PRIMARY KEY (id),
+    FOREIGN KEY (idMesero) REFERENCES Empleado(cedula),
+    FOREIGN KEY (idChef) REFERENCES Empleado(cedula),
+    foreign key (idCuenta) references factura(ID)
+);
+
+
+CREATE TABLE Detalle_Orden(
+
+	ID_detalle int NOT NULL auto_increment,
+    ID_Orden int NOT NULL,
+    ID_Item int NOT NULL,
+    cantidad int,
+    Observaciones varchar(255),
+    
+    
+    PRIMARY KEY (ID_detalle),
+    FOREIGN KEY (ID_Orden) references Orden(id),
+    foreign key (ID_Item) references Item(ID)
+);
+
+CREATE TABLE MesaFactura(
+	id int not null auto_increment,
+    idMesa int not null,
+    idCuenta int not null,
+    fecha DateTime,
+    
+    primary key (id),
+    foreign key (idMesa) references Mesa(idMesa),
+    foreign key (idCuenta) references factura(ID)
 );
  
 CREATE TABLE Detalle_Factura(
@@ -270,16 +271,10 @@ end$$
 delimiter ;
 delimiter $$
 
-create procedure NuevaOrden(in mesero varchar(10), in mesa int, out NuevaOrden int)
+create procedure NuevaOrden(in mesero varchar(10), in idCuen int)
 begin
-	INSERT INTO Orden(pagado, enPreparacion, cocinado, entregado, idMesero) 
-    VALUES (0, 0, 0, 0, mesero);
-    
-    SELECT LAST_INSERT_ID() into NuevaOrden;
-    
-    Insert INTO MesaOrden(idMesa, idOrden)
-    values(mesa, NuevaOrden);
-    
+	INSERT INTO Orden(idMesero,idCuenta) 
+    VALUES (mesero, idCuen);
 end$$
 
 create procedure EliminarOrden(in inOrden int)
@@ -360,7 +355,7 @@ begin
     Values(tratoEspecial,IdMesa);
     
     Update Mesa
-    set Mesa.disponibilidad = 1
+    set Mesa.disponibilidad = 0
     where Mesa.idMesa = IdMesa;
 end$$
 
@@ -376,13 +371,15 @@ begin
     where Factura.ID = idCuenta AND Factura.Pagado=0;
 end$$
 
-create procedure aggClienteCuenta(in idCuenta int, in cedula varchar(10), in Descuento int)
+create procedure aggCuenta2(in idCuenta int, in cedula varchar(10), in Descuento int, in Total double, in TipoPago varchar(30))
 begin
 	#Insert into Factura ( ID, Id_cliente, Descuento, Pagado)
     Update Factura
     set 
+		Factura.TOTAL = Total, 
 		Factura.Id_cliente = cedula,
         Factura.Descuento = Descuento,
+        Factura.TipoDePago = (Select ID from tipodepago where tipodepago.Tipo = TipoPago),
         Factura.Pagado = 1
     where Factura.ID = idCuenta AND Factura.Pagado = false;
 end$$
@@ -427,8 +424,68 @@ begin
     where Cliente.ced = idCliente;
 end$$	
 
+create procedure total(in idCuenta int)
+begin
+	SELECT Sum((i.precio * d.cantidad) - ((i.precio * d.cantidad) * (c.Descuento/100))) 
+	FROM orden as o JOIN factura as c ON c.ID = o.idCuenta Join detalle_orden as d ON d.ID_Orden = o.id Join item as i On i.ID = d.ID_Item
+    where c.ID = idCuenta;
+end$$
+
+create procedure obtenerTipopago()
+begin
+	Select Tipo from TipoDePago; 
+end$$
+#EL SCRIPT
+create procedure reporteMesero()
+begin
+	Select e.nombres as nombreMesero, d.cantidad as cantidaPlatos, f.ID as IDCuenta
+    from empleado as e JOIN orden as o ON e.cedula = o.idMesero Join  detalle_orden as d On d.ID_Orden = o.id join factura as f ON f.ID = o.idCuenta
+    where f.TOTAL >50;
+end$$
+
+create procedure obtenerCategoria()
+begin
+	Select * from categoria_item;
+end$$
+
+create procedure obtenerItemXCategorias(in nombre varchar(20))
+begin
+	Select i.Nombre from item as i Join categoria_item as c On c.ID = i.IdCategoria where c.Nombre = nombre;
+end$$
+
+create procedure obtenerIdItem(in nombre varchar(40))
+begin
+	Select ID from item where item.Nombre = nombre;
+end$$
+
+create procedure obtenerCuentas()
+begin
+	Select * from factura;
+end$$
+
+create procedure obtenerOrdenDeCuenta(in id int)
+begin
+	Select id from orden where orden.idCuenta = id;
+end$$
+
+create procedure obtenerMesasVacias()
+begin
+	Select idMesa from mesa where mesa.disponibilidad = 1;
+end$$
+
+create procedure obtenerMaxIdOrden()
+begin
+	Select count(id) from Orden; 
+end$$
 delimiter ;
 
+delimiter $$
+
+Create Trigger mesaFactura
+After Insert On factura for each row 
+begin
+	Insert into MesaFactura(idMesa,idCuenta,fecha) values (new.idMesa,new.ID,now());
+end$$
 
 delimiter ;
 INSERT INTO Rol (idRol, nombreRol, eliminado) 
@@ -488,5 +545,4 @@ VALUES 	(1, 'naranjada', 'jarra de naranja ', 4, 1, 3, 5, 0),
         (4, 'seco de gallina', 'seco de gallina', 4, 1, 10, 2, 0),
         (5, 'moros de lentejas', 'moros de lentejas', 7, 1, 13, 2, 0),
         (6, 'tiramisu', 'tiramisu', 3, 1, 4, 3, 0);
-delimiter $$
 

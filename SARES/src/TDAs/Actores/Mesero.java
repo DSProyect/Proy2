@@ -10,6 +10,7 @@ import Constants.Constants;
 
 import TDAs.Control.CtrlMesero;
 import TDAs.DB.Consult;
+import TDAs.DB.IngresosDB;
 import TDAs.Ordenes.ColaPedidos;
 import TDAs.Ordenes.OrdenItem;
 import java.util.LinkedList;
@@ -33,7 +34,7 @@ public class Mesero extends Empleado implements Update{
 
     public void ingresarDetalleOrden(OrdenItem OrdenItem) {
         this.OrdenItem = OrdenItem;
-        Consult.getInstancia().addItemOrden(OrdenItem);
+        IngresosDB.getInstancia().addItemOrden(OrdenItem);
     }
     
     public void ingresarPedidoACola(int idOrden,int tipoCola){

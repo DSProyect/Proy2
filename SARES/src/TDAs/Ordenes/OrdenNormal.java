@@ -16,8 +16,8 @@ public class OrdenNormal extends Orden {
         this.idMesa = idMesa;
     }*/
 
-    public OrdenNormal(String idMesero, String idCuenta, String idCocinero) {
-        super(idMesero, idCuenta, idCocinero);
+    public OrdenNormal(String idMesero, String idCuenta) {
+        super(idMesero, idCuenta);
     }
 
     public OrdenNormal(String idOrden, double total, boolean pagado, boolean cocinado, boolean entregado, int tiempoPreparacion, String idMesero, String idCocinero, String idCuenta) {

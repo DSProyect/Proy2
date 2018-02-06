@@ -5,7 +5,10 @@
  */
 package GUIs;
 
+import TDAs.DB.ActualizarDB;
 import TDAs.DB.Consult;
+import TDAs.DB.EliminarDB;
+import TDAs.DB.IngresosDB;
 import TDAs.Environment.Ambiente;
 import TDAs.Environment.CrearAmbiente;
 import TDAs.Environment.Mesa;
@@ -46,7 +49,7 @@ public class AdmMesas extends javax.swing.JFrame {
         btnBuscarMesa = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("IDMesa: ");
 
@@ -163,7 +166,7 @@ public class AdmMesas extends javax.swing.JFrame {
         else{
             Ambiente amb = new CrearAmbiente().crearAmbiente(txtAmbiente.getText().toUpperCase());
             Mesa mesa = new Mesa("0", Integer.parseInt(txtSillas.getText()),amb);
-            Consult.getInstancia().addMesa(mesa);
+            IngresosDB.getInstancia().addMesa(mesa);
             limpiar();
         }
     }//GEN-LAST:event_btnAggMesaActionPerformed
@@ -172,7 +175,7 @@ public class AdmMesas extends javax.swing.JFrame {
         if(isEmpty())
             JOptionPane.showMessageDialog(null,"llene los campos");
         else{
-            Consult.getInstancia().eliminarMesa(txtIdMesa.getText());
+            EliminarDB.getInstancia().eliminarMesa(txtIdMesa.getText());
         }
         limpiar();
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -181,7 +184,7 @@ public class AdmMesas extends javax.swing.JFrame {
         if(isEmpty())
             JOptionPane.showMessageDialog(null,"llene los campos");
         else{
-            Consult.getInstancia().actualizarMesa(txtIdMesa.getText(),Integer.parseInt(txtSillas.getText()),false,txtAmbiente.getText().toUpperCase());
+            ActualizarDB.getInstancia().actualizarMesa(txtIdMesa.getText(),Integer.parseInt(txtSillas.getText()),false,txtAmbiente.getText().toUpperCase());
             
         }
         limpiar();

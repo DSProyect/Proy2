@@ -6,6 +6,7 @@
 package GUIs;
 
 import TDAs.DB.Consult;
+import TDAs.DB.IngresosDB;
 import TDAs.Environment.Mesa;
 import TDAs.Ordenes.Cuenta;
 import TDAs.Ordenes.Orden;
@@ -25,8 +26,11 @@ public class GuiMesero extends javax.swing.JFrame {
     Cuenta cuenta;
     Mesa mesa;
     Orden orden;
-    public GuiMesero() {
+    String mesero;
+    public GuiMesero(String mesero) {
+        this.mesero = mesero;
         initComponents();
+        llenarCuentas();
     }
 
     /**
@@ -41,41 +45,32 @@ public class GuiMesero extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtIdOrden = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        txtIdCuenta = new javax.swing.JTextField();
-        btnCrearOrden = new javax.swing.JButton();
+        btnCrearCuenta = new javax.swing.JButton();
         btnIngresarItem = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
+        btnVerificar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
+        cmbCuenta = new javax.swing.JComboBox<>();
+        cmbOrden = new javax.swing.JComboBox<>();
+        btnBuscar = new javax.swing.JButton();
+        btnOrdenNueva = new javax.swing.JButton();
+        cmbMesa = new javax.swing.JComboBox<>();
+        chbPrioridad = new javax.swing.JCheckBox();
 
         jLabel2.setText("jLabel2");
 
         jLabel4.setText("jLabel4");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel3.setText("IdOrden: ");
 
-        txtIdOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdOrdenActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("idCuenta:");
 
-        txtIdCuenta.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearCuenta.setText("Crear Cuenta Nueva");
+        btnCrearCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdCuentaActionPerformed(evt);
-            }
-        });
-
-        btnCrearOrden.setText("CrearOrden");
-        btnCrearOrden.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearOrdenActionPerformed(evt);
+                btnCrearCuentaActionPerformed(evt);
             }
         });
 
@@ -86,106 +81,187 @@ public class GuiMesero extends javax.swing.JFrame {
             }
         });
 
-        btnLimpiar.setText("Limpiar");
+        btnVerificar.setText("VerMesas");
+        btnVerificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerificarActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("CedulaCliente:");
+        jLabel5.setText("Mesas");
+
+        cmbCuenta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCuentaActionPerformed(evt);
+            }
+        });
+
+        cmbOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbOrden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbOrdenActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setText("BuscarOrdenes");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        btnOrdenNueva.setText("Crear Orden nueva");
+        btnOrdenNueva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrdenNuevaActionPerformed(evt);
+            }
+        });
+
+        cmbMesa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        chbPrioridad.setText("Prioridad");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(btnCrearOrden)
-                .addGap(39, 39, 39)
+                .addContainerGap()
+                .addComponent(btnCrearCuenta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnOrdenNueva)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnIngresarItem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVerificar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCedula))
+                        .addGap(60, 60, 60)
+                        .addComponent(chbPrioridad)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
                             .addComponent(jLabel3)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIdCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIdOrden, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(20, 20, 20))
+                            .addComponent(cmbCuenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbMesa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtIdOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtIdCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                    .addComponent(cmbCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(cmbOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                    .addComponent(cmbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(chbPrioridad)
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrearOrden)
+                    .addComponent(btnCrearCuenta)
+                    .addComponent(btnOrdenNueva)
                     .addComponent(btnIngresarItem)
-                    .addComponent(btnLimpiar))
-                .addContainerGap(54, Short.MAX_VALUE))
+                    .addComponent(btnBuscar)
+                    .addComponent(btnVerificar))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIdOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdOrdenActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdOrdenActionPerformed
-
-    private void txtIdCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdCuentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdCuentaActionPerformed
-
-    private void btnCrearOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearOrdenActionPerformed
-        if(isEmpty())
-            JOptionPane.showMessageDialog(null,"LLENE LOS CAMPOS");
-        else{
-            
-                orden = new OrdenNormal("1", "1", "1");
-                Consult.getInstancia().aggOrden(orden);
-            
-                
+    private void btnCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCuentaActionPerformed
+        if(!cmbMesa.getSelectedItem().toString().equals("")){
+            IngresosDB.getInstancia().aggCuentasVacias(chbPrioridad.isSelected(), cmbMesa.getSelectedItem().toString());
+            llenarCuentas();
         }
-    }//GEN-LAST:event_btnCrearOrdenActionPerformed
+        else{
+            JOptionPane.showMessageDialog(null, "ingrese la mesa");
+        }
+    }//GEN-LAST:event_btnCrearCuentaActionPerformed
 
     private void btnIngresarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarItemActionPerformed
-        if(isEmpty()){
-            JOptionPane.showMessageDialog(null,"LLENE LOS CAMPOS");
-        }
-        else{
-            if(existeOrden(txtIdOrden.getText()))
-                new RealizarPedido().setVisible(true);
-            else   
-                JOptionPane.showMessageDialog(null, "NO EXISTE LA ORDEN");
-        }
+        new RealizarPedido(cmbOrden.getSelectedItem().toString()).setVisible(true);
     }//GEN-LAST:event_btnIngresarItemActionPerformed
 
-    private boolean existeOrden(String idOrden){
-        return Consult.getInstancia().existeOrden(idOrden);
-    }
-    private boolean isEmpty(){
-        if(txtIdOrden.getText().equals("") || txtIdCuenta.getText().equals("") || txtCedula.getText().equals("")){
-            return true;
+    private void llenarCuentas(){
+        ResultSet rs= Consult.getInstancia().obtenerCuentas();
+        cmbCuenta.removeAllItems();
+        cmbOrden.removeAllItems();
+        cmbMesa.removeAllItems();
+        try {
+            if(!rs.getBoolean(9))
+                cmbCuenta.addItem(Integer.toString(rs.getInt(1)));
+            while(rs.next()){
+                if(!rs.getBoolean(9))
+                    cmbCuenta.addItem(Integer.toString(rs.getInt(1)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GuiMesero.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
     }
+    private void cmbOrdenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrdenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbOrdenActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        ResultSet rs = Consult.getInstancia().obtenerOrdenCuenta(cmbCuenta.getSelectedItem().toString());
+        cmbOrden.removeAllItems();
+        try {
+            cmbOrden.addItem(Integer.toString(rs.getInt(1)));
+            while(rs.next()){
+                cmbOrden.addItem(Integer.toString(rs.getInt(1)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GuiMesero.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnOrdenNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenNuevaActionPerformed
+        try {
+            orden = new OrdenNormal(mesero,cmbCuenta.getSelectedItem().toString()); 
+            IngresosDB.getInstancia().aggOrden(orden);
+            new RealizarPedido(Integer.toString(Consult.getInstancia().obtenerMaxIdOrden().getInt(1))).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(GuiMesero.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnOrdenNuevaActionPerformed
+
+    private void cmbCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCuentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCuentaActionPerformed
+
+    private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
+        ResultSet rs = Consult.getInstancia().obtenerMesaDisponibles();
+        cmbMesa.removeAllItems();
+        try {
+            cmbMesa.addItem(Integer.toString(rs.getInt(1)));
+            while(rs.next()){
+                cmbMesa.addItem(Integer.toString(rs.getInt(1)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GuiMesero.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnVerificarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -216,22 +292,25 @@ public class GuiMesero extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiMesero().setVisible(true);
+                //new GuiMesero().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCrearOrden;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCrearCuenta;
     private javax.swing.JButton btnIngresarItem;
-    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnOrdenNueva;
+    private javax.swing.JButton btnVerificar;
+    private javax.swing.JCheckBox chbPrioridad;
+    private javax.swing.JComboBox<String> cmbCuenta;
+    private javax.swing.JComboBox<String> cmbMesa;
+    private javax.swing.JComboBox<String> cmbOrden;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField txtCedula;
-    private javax.swing.JTextField txtIdCuenta;
-    private javax.swing.JTextField txtIdOrden;
     // End of variables declaration//GEN-END:variables
 }
