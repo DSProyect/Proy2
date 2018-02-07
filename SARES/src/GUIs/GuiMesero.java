@@ -5,6 +5,8 @@
  */
 package GUIs;
 
+import TDAs.Actores.Mesero;
+import TDAs.Control.CtrlMesero;
 import TDAs.DB.Consult;
 import TDAs.DB.IngresosDB;
 import TDAs.Environment.Mesa;
@@ -26,7 +28,7 @@ public class GuiMesero extends javax.swing.JFrame {
     Cuenta cuenta;
     Mesa mesa;
     Orden orden;
-    String mesero;
+    String mesero = "";
     public GuiMesero(String mesero) {
         this.mesero = mesero;
         initComponents();
@@ -56,6 +58,7 @@ public class GuiMesero extends javax.swing.JFrame {
         btnOrdenNueva = new javax.swing.JButton();
         cmbMesa = new javax.swing.JComboBox<>();
         chbPrioridad = new javax.swing.JCheckBox();
+        btnCalcularTiempo = new javax.swing.JButton();
 
         jLabel2.setText("jLabel2");
 
@@ -121,30 +124,21 @@ public class GuiMesero extends javax.swing.JFrame {
         cmbMesa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         chbPrioridad.setText("Prioridad");
+        chbPrioridad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbPrioridadActionPerformed(evt);
+            }
+        });
+
+        btnCalcularTiempo.setText("CalcularTiempo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnCrearCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnOrdenNueva)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnIngresarItem)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVerificar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(chbPrioridad)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -155,7 +149,25 @@ public class GuiMesero extends javax.swing.JFrame {
                             .addComponent(cmbCuenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmbOrden, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmbMesa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(20, 20, 20))))
+                        .addGap(20, 20, 20))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(chbPrioridad)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCrearCuenta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnOrdenNueva)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIngresarItem)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBuscar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVerificar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCalcularTiempo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,14 +186,15 @@ public class GuiMesero extends javax.swing.JFrame {
                     .addComponent(cmbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(chbPrioridad)
-                .addGap(37, 37, 37)
+                .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrearCuenta)
                     .addComponent(btnOrdenNueva)
+                    .addComponent(btnCrearCuenta)
                     .addComponent(btnIngresarItem)
                     .addComponent(btnBuscar)
-                    .addComponent(btnVerificar))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(btnVerificar)
+                    .addComponent(btnCalcularTiempo))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -189,7 +202,7 @@ public class GuiMesero extends javax.swing.JFrame {
 
     private void btnCrearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearCuentaActionPerformed
         if(!cmbMesa.getSelectedItem().toString().equals("")){
-            IngresosDB.getInstancia().aggCuentasVacias(chbPrioridad.isSelected(), cmbMesa.getSelectedItem().toString());
+            CtrlMesero.ingresarCuentaNueva(chbPrioridad.isSelected(), cmbMesa.getSelectedItem().toString());
             llenarCuentas();
         }
         else{
@@ -235,14 +248,8 @@ public class GuiMesero extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnOrdenNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenNuevaActionPerformed
-        try {
-            orden = new OrdenNormal(mesero,cmbCuenta.getSelectedItem().toString()); 
-            IngresosDB.getInstancia().aggOrden(orden);
-            new RealizarPedido(Integer.toString(Consult.getInstancia().obtenerMaxIdOrden().getInt(1))).setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(GuiMesero.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        CtrlMesero.ingresarOrdenNueva(mesero, cmbCuenta.getSelectedItem().toString());
+        btnBuscarActionPerformed(evt);
     }//GEN-LAST:event_btnOrdenNuevaActionPerformed
 
     private void cmbCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCuentaActionPerformed
@@ -261,6 +268,10 @@ public class GuiMesero extends javax.swing.JFrame {
             Logger.getLogger(GuiMesero.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnVerificarActionPerformed
+
+    private void chbPrioridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbPrioridadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chbPrioridadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,6 +310,7 @@ public class GuiMesero extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCalcularTiempo;
     private javax.swing.JButton btnCrearCuenta;
     private javax.swing.JButton btnIngresarItem;
     private javax.swing.JButton btnOrdenNueva;

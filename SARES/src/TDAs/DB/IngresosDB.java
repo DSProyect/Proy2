@@ -33,9 +33,8 @@ public class IngresosDB {
             llamada.setString(1, Integer.toString(mesa.getAsientos()));
             llamada.setInt(2, Integer.parseInt(mesa.getAmbiente().getId()));
             resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
                 return true;
-            }
+            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -56,27 +55,25 @@ public class IngresosDB {
             llamada.setInt(3, ordenItem.getCantidadArticulos());
             llamada.setString(4, ordenItem.getObservaciones());
             resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
+            
                 return true;
-            }
+           
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
         return false;
     }
     
-    public boolean aggOrden(Orden orden){ //Correcto
+    public boolean aggOrden(String idMesero, String idCuenta){ //Correcto
         cadenaDeLlamada = "{CALL NuevaOrden(?,?)}";
         resultado = null;
         //Corregir el metodo en la base de datos debe ser OrdenCuenta
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
-            llamada.setString(1, orden.getIdMesero());
-            llamada.setInt(2, Integer.parseInt(orden.getIdCuenta()));
+            llamada.setString(1, idMesero);
+            llamada.setInt(2, Integer.parseInt(idCuenta));
             resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
-                return true;
-            }
+            return true;
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -110,9 +107,8 @@ public class IngresosDB {
             llamada.setString(3, apellido);
             llamada.setString(4, direccion);
             resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
                 return true;
-            }
+            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -130,9 +126,9 @@ public class IngresosDB {
             llamada.setDouble(4, total);
             llamada.setString(5, tipo);
             resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
+            
                 return true;
-            }
+            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -147,9 +143,7 @@ public class IngresosDB {
             llamada.setBoolean(1, prioridad);
             llamada.setInt(2, Integer.parseInt(idMesa));
             resultado = llamada.executeQuery();
-            if(resultado.isBeforeFirst()){
-                return true;
-            }
+            return true;
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }

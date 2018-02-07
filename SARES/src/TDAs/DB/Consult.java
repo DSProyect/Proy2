@@ -454,10 +454,24 @@ public class Consult {
         try{
             llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
             resultado = llamada.executeQuery();
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }       
+        return resultado;
+    }
+    
+    public ResultSet obtenerTiempoPreparacion(int Orden){
+        cadenaDeLlamada = "{CALL obtenerTiempoPreparacion(?)}";
+        resultado = null;
+        try{
+            llamada = Coneccion.getInstancia().getConnection().prepareCall(cadenaDeLlamada);
+            llamada.setInt(1, Orden);
+            resultado = llamada.executeQuery();
             resultado.next();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
         }       
         return resultado;
     }
+    
 }

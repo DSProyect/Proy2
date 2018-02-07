@@ -435,6 +435,7 @@ create procedure obtenerTipopago()
 begin
 	Select Tipo from TipoDePago; 
 end$$
+
 #EL SCRIPT
 create procedure reporteMesero()
 begin
@@ -442,6 +443,8 @@ begin
     from empleado as e JOIN orden as o ON e.cedula = o.idMesero Join  detalle_orden as d On d.ID_Orden = o.id join factura as f ON f.ID = o.idCuenta
     where f.TOTAL >50;
 end$$
+
+
 
 create procedure obtenerCategoria()
 begin
@@ -463,9 +466,9 @@ begin
 	Select * from factura;
 end$$
 
-create procedure obtenerOrdenDeCuenta(in id int)
+create procedure obtenerOrdenDeCuenta(in idC int)
 begin
-	Select id from orden where orden.idCuenta = id;
+	Select id from orden where orden.idCuenta = idC;
 end$$
 
 create procedure obtenerMesasVacias()
@@ -476,6 +479,13 @@ end$$
 create procedure obtenerMaxIdOrden()
 begin
 	Select count(id) from Orden; 
+end$$
+
+create procedure obtenerTiempoPreparacion(in idOrden int)
+begin
+	Select (MAX(TiempoPreparacion) + (if(cantidad > 1,SUM(cantidad)*3,0))) as TiempoPedido
+    From orden as o Join detalle_orden as d ON d.ID_Orden = o.id Join item as i On i.ID = d.ID_Item
+    where o.id = idOrden;
 end$$
 delimiter ;
 

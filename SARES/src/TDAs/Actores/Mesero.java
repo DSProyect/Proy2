@@ -7,14 +7,20 @@ package TDAs.Actores;
 
 
 import Constants.Constants;
+import GUIs.GuiMesero;
+import GUIs.RealizarPedido;
 
 import TDAs.Control.CtrlMesero;
 import TDAs.DB.Consult;
 import TDAs.DB.IngresosDB;
 import TDAs.Ordenes.ColaPedidos;
 import TDAs.Ordenes.OrdenItem;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -25,11 +31,14 @@ public class Mesero extends Empleado implements Update{
     ColaPedidos cola= ColaPedidos.getInstancia();
     private OrdenItem OrdenItem;
     
-
+    
     public Mesero(String identificacion, String nombres, String apellidos, int edad, double sueldo, String user) {
         super(identificacion, nombres, apellidos, edad, sueldo, user);
         this.tipoEmp = Constants.mesero;
         ctrl = new CtrlMesero(this);
+    }
+
+    public Mesero() {
     }
 
     public void ingresarDetalleOrden(OrdenItem OrdenItem) {
@@ -47,6 +56,7 @@ public class Mesero extends Empleado implements Update{
             cola.addPedidoNormal(idOrden);
         }
     }
+   
     
     @Override
     public void update() {
